@@ -158,19 +158,25 @@ andromedad tendermint unsafe-reset-all --home $HOME/.andromedad
 systemctl restart andromedad && journalctl -u andromedad -f -o cat
 ```
 
-- **SnapShot Testnet (~0.5GB) updated every 5 hours:**
-```python
-cd $HOME
-apt install lz4
+# Snapshots are taken automatically every 6 hours
+
+- **Stop Andromeda**
+```pyton
 sudo systemctl stop andromedad
-cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
-rm -rf $HOME/.andromedad/data
-curl -o - -L http://andromedad.snapshot.stavr.tech:1021/andromedad/andromedad-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.andromedad --strip-components 2
-curl -o - -L http://andromedad.wasm.stavr.tech:1002/wasm-andromedad.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.andromedad --strip-components 2
-mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json
-wget -O $HOME/.andromedad/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/AndromedaProtocol/addrbook.json"
-sudo systemctl restart andromedad && journalctl -u andromedad -f -o cat
 ```
+- **Download latest snapshot**
+```pyton
+cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
+curl https://snapshot.andromeda.max-node.xyz/andromeda/andromeda-snapshot-20230303.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+```
+```pyton
+mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json 
+```
+
+- **Restart the service and check the log**
+```pyton
+sudo systemctl start andromedad
+sudo journalctl -u andromedad -f --no-hostname -o cat
 
 - **Start the service and check the logs**
 ```python
