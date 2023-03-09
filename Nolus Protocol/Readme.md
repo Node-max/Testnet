@@ -7,10 +7,10 @@
 ## [Snapshot](https://github.com/Node-max/Testnet/tree/main/Nolus%20Protocol/Snapshot)
 # RPC
 ```python
-https://rpc-nolus.max-node.xyz/
+https://rpc-nolus.node-max.space/
 ```
 # API
 ```python
-https://api-nolus.max-node.xyz
+https://api-nolus.node-max.space/
 ```
 
