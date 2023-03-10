@@ -6,11 +6,14 @@
 
 # RPC
 ```python
-https://rpc-nolus.node-max.space/
-```
+https://rpc.nolus-test.max-node.xyz/```
 # API
 ```python
-https://api-nolus.node-max.space/
+https://api.nolus-test.max-node.xyz/
+```
+# gRpc
+```python
+https://grpc.nolus-test.max-node.xyz/
 ```
 
 - **if you want to create RPC, API [HOW-TO-MAKE-RPC-API](https://github.com/Node-max/HOW-TO-MAKE-RPC-API)**
