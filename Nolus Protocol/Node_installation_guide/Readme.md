@@ -6,7 +6,8 @@
 
 # RPC
 ```python
-https://rpc.nolus-test.max-node.xyz/```
+https://rpc.nolus-test.max-node.xyz/
+```
 # API
 ```python
 https://api.nolus-test.max-node.xyz/
