@@ -1,3 +1,4 @@
+## Snapshots are taken automatically each day at 21:00 UTC
 - **install dependencies, if needed**
 ```pyton
 sudo apt update
@@ -14,12 +15,13 @@ cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state
 - **Download latest snapshot**
 ```pyton
 nibid tendermint unsafe-reset-all --home $HOME/.nibid --keep-addr-book 
-curl https://snapshot-nibidu.max-node.xyz/nibiru/nibid-snapshot-20230312.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.nolus
+curl https://snapshot-nibiru.max-node.xyz/nibiru/nibid-snapshot-20230312.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.nolus
 ```
 ```pyton
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json 
 ```
 - **Restart the service and check the log**
 ```pyton
-sudo systemctl restart nibid && journalctl -u nibid -f -o cat
+sudo systemctl restart nibid
+journalctl -u nibid  -f --no-hostname -o cat
 ```
