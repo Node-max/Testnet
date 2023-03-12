@@ -1,4 +1,4 @@
-**[DISCORT](https://discord.gg/nibiru)**\ **[TWITER](https://twitter.com/NibiruChain)**\ **[GITHUB](https://github.com/NibiruChain)**\ **[GITBOOK](https://nibiru.fi/docs)**
+**[DISCORT](https://discord.gg/nibiru)**/ **[TWITER](https://twitter.com/NibiruChain)**/ **[GITHUB](https://github.com/NibiruChain)**/ **[GITBOOK](https://nibiru.fi/docs)**
 
 RPC
 ```python
