@@ -24,7 +24,6 @@ mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validato
 ```
 - **Restart the service and check the log**
 ```pyton
-sudo systemctl restart nibid
-systemctl restart nibid && journalctl -u nibid -f -o cat
+systemctl restart nolusd && journalctl -u nolusd -f -o cat
 ```
 
