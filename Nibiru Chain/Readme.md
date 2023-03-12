@@ -11,4 +11,4 @@ gRPC
 https://grpc-nibidu.max-node.xyz/
 ```
 
-Snapshot
+[Snapshot](https://github.com/Node-max/Testnet/tree/main/Nibiru%20Chain/Snaphot)
