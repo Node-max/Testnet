@@ -5,7 +5,6 @@
 sudo apt update
 sudo apt install lz4 -y
 ```
-# Snapshots are taken automatically every 6 hours
 
 - **Stop nolus**
 
@@ -25,7 +24,7 @@ mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validato
 ```
 - **Restart the service and check the log**
 ```pyton
-sudo systemctl start nolusd
-sudo journalctl -u nolusd -f --no-hostname -o cat
+sudo systemctl restart nibid
+systemctl restart nibid && journalctl -u nibid -f -o cat
 ```
 
