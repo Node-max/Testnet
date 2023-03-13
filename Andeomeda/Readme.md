@@ -7,6 +7,6 @@ https://github.com/Node-max/Testnet/tree/main/Andeomeda/Snapshot
 ## State sync
 https://github.com/Node-max/Testnet/tree/main/Andeomeda/StateSync
 ## Public RPC endpoint
-https://rpc.andromeda..node-max.space/
+https://rpc.andromeda.node-max.space/
 ## Public API
-https://api.andromeda..node-max.space/
+https://api.andromeda.node-max.space/
