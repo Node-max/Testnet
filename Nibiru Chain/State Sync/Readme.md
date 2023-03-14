@@ -22,7 +22,8 @@ sed -i 's|^trust_height *=.*|trust_height = '$BLOCK_HEIGHT'|' $HOME/.nibid/confi
 sed -i 's|^trust_hash *=.*|trust_hash = "'$TRUST_HASH'"|' $HOME/.nibid/config/config.toml
 
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json
-
+```
+```python
 curl -s https://snapshot.max-node.xyz/nibiru/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nibid/data
 ```
 ```python
