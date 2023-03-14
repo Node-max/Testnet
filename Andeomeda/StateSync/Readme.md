@@ -1,7 +1,7 @@
 # State Sync Andromeda protocol 
 **Information:**
 
-**Public RPC endpoint:**  [https://rpc.andromeda.node-max.space/](https://rpc.andromeda.node-max.space/) \
+**Public RPC endpoint:**  [https://rpc.andromeda.node-max.space/](https://rpc.andromeda.node-max.space/)
 
 # Guide to sync your node using State Sync:
 **Copy the entire command**
