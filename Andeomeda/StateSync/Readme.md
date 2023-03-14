@@ -18,7 +18,7 @@ s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.andromedad/config/config.toml
 
-peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@184.174.37.152:26656" \
+peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@rpc.andromeda.node-max.space:26656" \
 && sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.andromedad/config/config.toml 
 
 andromedad tendermint unsafe-reset-all --home ~/.andromedad --keep-addr-book && sudo systemctl restart andromedad && \
