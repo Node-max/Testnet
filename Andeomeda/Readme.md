@@ -1,3 +1,5 @@
+## [EXPLORER](https://andromeda.explorers.guru/validators) / [DISCORD](https://discord.gg/zq5ZGm5Y) / [TWITTER](https://twitter.com/AndromedaProt)
+
 ## Node-max: Services for the Andromeda Protocol
 
 ## Node installation guide
