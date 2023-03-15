@@ -7,7 +7,7 @@ quasard keys add <YOUR_WALLET_NAME>
 - **Recover wallet**
 ⚠️ save the **seed** phrase
 ```python
-Recover wallet
+quasard keys add <YOUR_WALLET_NAME> --recover
 ```
 - **List of all wallets**
 ```python
