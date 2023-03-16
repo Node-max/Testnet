@@ -7,7 +7,7 @@
 **Copy the entire command**
 ```python
 sudo systemctl stop quasard
-SNAP_RPC="https://rpc.quasar.node-max.space/"; \
+SNAP_RPC="https://rpc.quasar.node-max.space/";
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
