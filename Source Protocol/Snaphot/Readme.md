@@ -1,4 +1,4 @@
-# SnapShot (~0.3 GB) updated every 6 hours
+# SnapShot updated every 6 hours
 
 # Instructions
 - **Stop the service and reset the data**
