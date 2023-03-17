@@ -1,9 +1,6 @@
-- **Minimum hardware requirements**:
+# Auto installation
 
-| Node Type |CPU | RAM  | Storage  | 
-|-----------|----|------|----------|
-| Testnet   |   4|  8GB | 150GB    |
-
+wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Quasar/Node_installation_guide/auto_qussar && chmod +x sources && ./sources
 
 # Manual installation
 
