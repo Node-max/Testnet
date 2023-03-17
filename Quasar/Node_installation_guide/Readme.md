@@ -1,7 +1,7 @@
 # Auto installation
-
+```python
 wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Quasar/Node_installation_guide/auto_qussar && chmod +x sources && ./sources
-
+```
 # Manual installation
 
 ### Preparing the server
