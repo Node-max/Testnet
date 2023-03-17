@@ -5,17 +5,13 @@ https://api.source.max-node.xyz/ \
 **gRpc** \
 https://grpc.source.max-node.xyz/ 
 
-- **Minimum hardware requirements**:
 
-| Node Type |CPU | RAM  | Storage  | 
-|-----------|----|------|----------|
-| Testnet   |   4| 8GB  | 160GB    |
-
-# Manual installation
+# Auto installation
 ```python
 wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/auto_install_Source && chmod +x sources && ./sources
 ```
 
+# Manual installation
 
 ### Preparing the server
 ```python
