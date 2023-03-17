@@ -1,10 +1,23 @@
+**RPC**
+```python
+https://rpc.source.max-node.xyz/
+```
+**API**
+```python
+https://api.source.max-node.xyz/
+```
+**gRpc**
+```python
+https://grpc.source.max-node.xyz/
+```
+
 - **Minimum hardware requirements**:
 
 | Node Type |CPU | RAM  | Storage  | 
 |-----------|----|------|----------|
 | Testnet   |   4| 8GB  | 160GB    |
 
-# 1) Manual installation
+# Manual installation
 
 ### Preparing the server
 ```python
