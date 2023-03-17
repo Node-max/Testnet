@@ -1,15 +1,9 @@
 **RPC**
-```python
 https://rpc.source.max-node.xyz/
-```
 **API**
-```python
 https://api.source.max-node.xyz/
-```
 **gRpc**
-```python
 https://grpc.source.max-node.xyz/
-```
 
 - **Minimum hardware requirements**:
 
