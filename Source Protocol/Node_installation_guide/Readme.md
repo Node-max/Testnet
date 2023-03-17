@@ -3,7 +3,7 @@ https://rpc.source.max-node.xyz/ \
 **API** \
 https://api.source.max-node.xyz/ \
 **gRpc** \
-https://grpc.source.max-node.xyz/ \
+https://grpc.source.max-node.xyz/ 
 
 - **Minimum hardware requirements**:
 
