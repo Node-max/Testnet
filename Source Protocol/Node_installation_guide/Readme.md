@@ -12,9 +12,9 @@ https://grpc.source.max-node.xyz/
 | Testnet   |   4| 8GB  | 160GB    |
 
 # Manual installation
-
+```python
 wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/auto_install_Source && chmod +x sources && ./sources
-
+```
 
 
 ### Preparing the server
