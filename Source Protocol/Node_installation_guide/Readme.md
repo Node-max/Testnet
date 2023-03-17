@@ -1,9 +1,4 @@
-**RPC** \
-https://rpc.source.max-node.xyz/ \
-**API** \
-https://api.source.max-node.xyz/ \
-**gRpc** \
-https://grpc.source.max-node.xyz/ 
+<img width="460" alt="image" src="https://user-images.githubusercontent.com/61777095/225799416-e582b3ae-af3b-496e-9e2e-31711541113c.png">
 
 
 # Auto installation
