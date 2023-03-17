@@ -13,6 +13,10 @@ https://grpc.source.max-node.xyz/
 
 # Manual installation
 
+wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/auto_install_Source && chmod +x sources && ./sources
+
+
+
 ### Preparing the server
 ```python
 sudo apt update && sudo apt upgrade -y && \
