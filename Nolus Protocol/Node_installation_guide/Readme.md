@@ -93,7 +93,7 @@ nolusd init $MONIKER_NOLUS --chain-id $CHAIN_ID_NOLUS
 ```python
 wget https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/genesis.json
 mv ./genesis.json ~/.nolus/config/genesis.json
-wget -O $HOME/.nolus/config/addrbook.json "https://raw.githubusercontent.com/sergiomateiko/addrbooks/main/nolus/addrbook.json"
+wget -O $HOME/.nolus/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Nolus%20Protocol/Node_installation_guide/addrbook.json"
 ```
 - **Adding seeds and peers**
 ```python
@@ -152,8 +152,8 @@ sudo systemctl stop nolusd
 cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
 nolusd tendermint unsafe-reset-all --home $HOME/.nolus
 
-SNAP_RPC=http://rpc.nolus.ppnv.space:34657
-SNAP_PEER=1a0bb6c35e2663202535d4b849ff06250762d299@rpc.nolus.ppnv.space:35656
+SNAP_RPC=http://rpc.nolus-test.max-node.xyz:43656
+SNAP_PEER=f299f7764b0bd293dd9f3f9b347ee5eccc519de7@5.182.33.99:43656
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
