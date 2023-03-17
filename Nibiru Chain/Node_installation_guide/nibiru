@@ -166,7 +166,7 @@ apt install lz4
 sudo systemctl stop nibid
 cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup 
 nibid tendermint unsafe-reset-all --home $HOME/.nibid --keep-addr-book 
-curl https://snapshot.max-node.xyz/nibiru/nibid-snapshot-20230312.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.nolus
+curl https://snapshot.max-node.xyz/nibiru/snapshot.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.nolus
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json 
 sudo systemctl restart nibid && journalctl -u nibid  -f --no-hostname -o cat
 
