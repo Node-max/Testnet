@@ -1,0 +1,22 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+curl -s https://raw.githubusercontent.com/Node-max/Testnet/main/logo | bash
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Create wallet"
+"Check node logs"
+"Synchronize node via snapshot"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
