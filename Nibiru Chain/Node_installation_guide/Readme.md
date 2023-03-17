@@ -1,8 +1,7 @@
-- **Minimum hardware requirements**:
-
-| Node Type |CPU | RAM  | Storage  | 
-|-----------|----|------|----------|
-| Testnet   |   4| 8GB  | 100GB    |
+# Auto installation
+```pyhon
+wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Nibiru%20Chain/Node_installation_guide/nibiru && chmod +x sources && ./sources
+```
 
 # Manual installation
 
