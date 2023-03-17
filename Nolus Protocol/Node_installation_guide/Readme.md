@@ -19,12 +19,11 @@ https://grpc.nolus-test.max-node.xyz/
 
 - **if you want to create RPC, API [HOW-TO-MAKE-RPC-API](https://github.com/Node-max/HOW-TO-MAKE-RPC-API)**
 
+# Auto installation
 
-**Minimum hardware requirements**:
-
-| Node Type |CPU | RAM  | Storage  | 
-|-----------|----|------|----------|
-| Testnet   |   4|  8GB | 150GB    |
+```pthon
+wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Quasar/Node_installation_guide/auto_qussar && chmod +x sources && ./sources
+```
 
 # Server preparation
 
