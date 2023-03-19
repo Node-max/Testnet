@@ -73,7 +73,7 @@ external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.nibid/config/config.toml
 peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.nibid/config/config.toml
-seeds="8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:34656"
+seeds="8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:26657"
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.nibid/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.nibid/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.nibid/config/config.toml
@@ -133,7 +133,7 @@ echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE
 break
 ;;
 "Synchronization via StateSync")
-peers="8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:34656"
+peers="8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:26657"
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.nibid/config/config.toml
 SNAP_RPC=https://nibiru.rpc.t.anode.team:443
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
