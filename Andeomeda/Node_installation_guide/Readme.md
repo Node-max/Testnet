@@ -181,6 +181,7 @@ mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/pri
 ```pyton
 sudo systemctl start andromedad
 sudo journalctl -u andromedad -f --no-hostname -o cat
+```
 
 - **Start the service and check the logs**
 ```python
