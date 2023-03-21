@@ -5,7 +5,7 @@ https://rpc-defund.max-node.xyz/
 ```
 API
 ```python
-https://api-defund.max-node.xyz//
+https://api-defund.max-node.xyz/
 ````
 gRPC
 ```python
