@@ -1,16 +1,8 @@
-
-# DeFund Testnet guide
-
-[WEBSITE](https://defund.app/) \
+[WEBSITE](https://defund.app/) /
 [GitHub](https://github.com/defund-labs/testnet)
-=
 
-# 1) Auto_install script
-```python
-wget -O dfn  && chmod +x dfn && ./dfn
-```
 
-# 2) Manual installation
+# Manual installation
 
 ### Preparing the server
 
