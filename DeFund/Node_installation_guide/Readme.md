@@ -152,7 +152,7 @@ defundd tx staking create-validator \
   --commission-rate "0.1" \
   --min-self-delegation "1" \
   --pubkey  $(defundd tendermint show-validator) \
-  --moniker STAVRguide \
+  --moniker <your name> \
   --chain-id orbit-alpha-1 \
   --identity="" \
   --details="" \
@@ -186,6 +186,6 @@ defundd journalctl -u haqqd -f -o cat
 ```
 ### Check Balance
 ```python
-defundd query bank balances defund...addressdefund1yjgn7z09ua9vms259j
+defundd query bank balances defund1kh03v.........hp2np7um3eayspj6mzh7
 ```
 
