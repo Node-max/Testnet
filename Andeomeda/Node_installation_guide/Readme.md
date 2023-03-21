@@ -16,13 +16,6 @@ https://rpc.andromeda-test.max-node.xyz/
 ```
 - **if you want to create RPC, API [HOW-TO-MAKE-RPC-API](https://github.com/Node-max/HOW-TO-MAKE-RPC-API)**
 
-
-**Minimum hardware requirements**:
-
-| Node Type |CPU | RAM  | Storage  | 
-|-----------|----|------|----------|
-| Testnet   |   4|  8GB | 150GB    |
-
 # Server preparation
 ```python
 sudo apt update && sudo apt upgrade -y
