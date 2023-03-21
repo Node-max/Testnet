@@ -108,7 +108,7 @@ sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.defund/config/config.
 
 ## Download addrbook
 ```python
-wget -O $HOME/.defund/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/DeFund/addrbook.json"
+wget -O $HOME/.defund/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/DeFund/Node_installation_guide/addrbook.json"
 ```
 
 ## StateSync
