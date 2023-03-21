@@ -1,9 +1,7 @@
 # Andromeda_testnet
 ![Image alt](https://github.com/Node-max/HOW-TO-MAKE-RPC-API/blob/main/foto/mmWl_G3q.jpg)
 
-# [WebSite](https://andromedaprotocol.io/) 
-# [GitHub](https://github.com/andromedaprotocol) 
-# [Discord](https://discord.gg/fnfwb3SJ)
+# [WebSite](https://andromedaprotocol.io/) / [GitHub](https://github.com/andromedaprotocol) / [Discord](https://discord.gg/fnfwb3SJ)
 
 # API
 ```python
