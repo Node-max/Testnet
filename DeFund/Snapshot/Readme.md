@@ -1,8 +1,10 @@
 # install dependencies, if needed
+```python
 sudo apt update
 sudo apt install lz4 -y
 sudo systemctl stop defundd
-
+```
+```python
 cp $HOME/.defund/data/priv_validator_state.json $HOME/.defund/priv_validator_state.json.backup 
 
 defundd tendermint unsafe-reset-all --home $HOME/.defund --keep-addr-book 
@@ -12,6 +14,7 @@ mv $HOME/.defund/priv_validator_state.json.backup $HOME/.defund/data/priv_valida
 
 sudo systemctl start defundd
 sudo journalctl -u defundd -f --no-hostname -o cat
+```
 
 # Live Peers
 ```python
