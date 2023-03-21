@@ -14,8 +14,8 @@ options=(
 "Install Node"
 "Create wallet"
 "Check node logs"
-"Synchronization via StateSync"
-"Synchronization via SnapShot"
+"StateSync"
+"SnapShot"
 "UPDATE"
 "Delete Node"
 "Exit")
@@ -135,7 +135,7 @@ echo -e "      \e[1m\e[32m!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!\e[0m'"
 
 break
 ;;
-"Synchronization via StateSync")
+"StateSync")
 echo -e "      \e[1m\e[32m SOOOON\e[0m"
 
 break
@@ -151,7 +151,7 @@ sudo journalctl -u quasarnoded -f -o cat
 
 break
 ;;
-"Synchronization via SnapShot")
+"SnapShot")
 echo -e "      \e[1m\e[32m SOOOON\e[0m"
 
 break
