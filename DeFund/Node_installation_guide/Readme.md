@@ -1,6 +1,10 @@
 [WEBSITE](https://defund.app/) /
 [GitHub](https://github.com/defund-labs/testnet)
 
+# Auto installation
+```python
+wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/DeFund/Node_installation_guide/Defund_auto && chmod +x sources && ./sources
+```
 
 # Manual installation
 
