@@ -14,8 +14,8 @@ options=(
 "Install Node"
 "Create wallet"
 "Check node logs"
-"Synchronization via StateSync"
-"Synchronization via SnapShot"
+"StateSync"
+"SnapShot"
 "UPDATE"
 "Delete Node"
 "Exit")
@@ -128,7 +128,7 @@ echo -e "      \e[1m\e[32m!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!\e[0m'"
 
 break
 ;;
-"Synchronization via StateSync")
+"StateSync")
 SNAP_RPC=http://rpc.nolus-test.max-node.xyz:43656
 peers="f299f7764b0bd293dd9f3f9b347ee5eccc519de7@5.182.33.99:43656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$peers'"|' $HOME/.nolus/config/config.toml
@@ -161,7 +161,7 @@ sudo journalctl -u nolusd -f -o cat
 
 break
 ;;
-"Synchronization via SnapShot")
+"SnapShot")
 cd $HOME
 apt install lz4
 sudo systemctl stop nolusd
