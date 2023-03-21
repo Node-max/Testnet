@@ -174,7 +174,7 @@ defundd status 2>&1 | jq .NodeInfo
 ```
 ### Check node logs
 ```python
-defundd journalctl -u haqqd -f -o cat
+sudo journalctl -u defundd -f --no-hostname -o cat
 ```
 ### Check Balance
 ```python
