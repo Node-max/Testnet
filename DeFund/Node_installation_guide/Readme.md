@@ -163,7 +163,6 @@ rm -rf .defund && \
 rm -rf $(which defundd)
 ```
 
-#
 ### Sync Info
 ```python
 defundd status 2>&1 | jq .SyncInfo
