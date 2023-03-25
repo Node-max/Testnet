@@ -13,7 +13,7 @@ TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.bloc
 
 echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
 
-PEERS="f8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:26657"
+PEERS="b268ce3c0eba0ce89995fa04a0a639ad8c9c0784@194.163.168.178:29656,83be009ed822ad05d877c26bfa457c95551128c0@167.99.249.130:26656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.nibid/config/config.toml
 
 sed -i 's|^enable *=.*|enable = true|' $HOME/.nibid/config/config.toml
