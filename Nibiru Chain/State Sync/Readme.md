@@ -24,7 +24,7 @@ sed -i 's|^trust_hash *=.*|trust_hash = "'$TRUST_HASH'"|' $HOME/.nibid/config/co
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json
 ```
 ```python
-curl -s https://snapshot.max-node.xyz/nibiru/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nibid/data
+curl -s https://snapshot-test.max-node.xyz/nibiru/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nibid/data
 ```
 ```python
 sudo systemctl restart nibid
