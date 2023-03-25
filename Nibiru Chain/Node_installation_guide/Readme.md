@@ -76,7 +76,7 @@ external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.nibid/config/config.toml
 peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.nibid/config/config.toml
-seeds="f8b421cde8b1bb1b1d3efa5c5cdafe58ce0813e9@5.182.33.99:34656"
+seeds="b268ce3c0eba0ce89995fa04a0a639ad8c9c0784@194.163.168.178:29656,83be009ed822ad05d877c26bfa457c95551128c0@167.99.249.130:26656"
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.nibid/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.nibid/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.nibid/config/config.toml
