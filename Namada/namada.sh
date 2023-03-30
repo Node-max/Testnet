@@ -13,8 +13,8 @@ if [ -f "$bash_profile" ]; then
 	    . $HOME/.bash_profile
 fi
 sleep 1 && curl -s https://raw.githubusercontent.com/Node-max/Testnet/main/logo | bash && sleep 1
-if ss -tulpen | awk '{print $5}' | grep -q ":36656$" ; then
-        echo -e "\e[31mInstallation is not possible, port 36656 already in use.\e[39m"
+if ss -tulpen | awk '{print $5}' | grep -q ":26656$" ; then
+        echo -e "\e[31mInstallation is not possible, port 26656 already in use.\e[39m"
         exit
 else
         echo ""
