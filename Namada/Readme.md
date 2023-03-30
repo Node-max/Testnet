@@ -1,4 +1,4 @@
-
+# The official documentation is available [here](https://docs.namada.net/user-guide/install/index.html).
 # Installation
 ## Use the script for quick installation:
 ```python
