@@ -2,7 +2,7 @@
 # Installation
 ## Use the script for quick installation:
 ```python
-wget -q -O namada.sh wget -q -O namada.sh https://raw.githubusercontent.com/Node-max/Testnet/main/Namada/namada.sh && chmod +x namada.sh && sudo /bin/bash namada.sh && chmod +x namada.sh && sudo /bin/bash namada.sh
+wget -q -O namada.sh https://raw.githubusercontent.com/Node-max/Testnet/main/Namada/namada.sh && chmod +x namada.sh && sudo /bin/bash namada.sh
 ```
 ## Specify a name for your node and wait for the installation to complete, after full synchronization proceed to the next step:
 ```python
