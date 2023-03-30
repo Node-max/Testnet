@@ -12,7 +12,7 @@ bash_profile=$HOME/.bash_profile
 if [ -f "$bash_profile" ]; then
 	    . $HOME/.bash_profile
 fi
-sleep 1 && curl -s https://api.nodes.guru/logo.sh | bash && sleep 1
+sleep 1 && curl -s https://raw.githubusercontent.com/Node-max/Testnet/main/logo | bash && sleep 1
 if ss -tulpen | awk '{print $5}' | grep -q ":36656$" ; then
         echo -e "\e[31mInstallation is not possible, port 36656 already in use.\e[39m"
         exit
