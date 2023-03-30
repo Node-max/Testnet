@@ -28,7 +28,7 @@ if [ ! $VALIDATOR_ALIAS ]; then
 	echo 'export VALIDATOR_ALIAS='\"${VALIDATOR_ALIAS}\" >> $HOME/.bash_profile
 fi
 echo -e 'Setting up swapfile...\n'
-curl -s https://api.nodes.guru/swap8.sh | bash
+curl -s https://raw.githubusercontent.com/Node-max/Testnet/main/Namada/swap8.sh | bash
 echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
 . $HOME/.bash_profile
 sleep 1
