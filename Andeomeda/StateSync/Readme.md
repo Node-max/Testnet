@@ -1,7 +1,7 @@
 # State Sync Andromeda protocol 
 **Information:**
 
-**Public RPC endpoint:**  [https://rpc.andromeda.node-max.space/](https://rpc.andromeda.node-max.space/)
+**Public RPC endpoint:**  [https://rpc.andromeda.max-node.xyz/](https://rpc.andromeda.max-node.xyz/)
 
 # Guide to sync your node using State Sync:
 **Copy the entire command**
@@ -17,7 +17,7 @@ TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.bloc
 
 echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
 
-peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@rpc.andromeda.node-max.space:26656" \
+peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@rpc.andromeda.max-node.xyz:26656" \
 && sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.andromedad/config/config.toml 
 
 sed -i 's|^enable *=.*|enable = true|' $HOME/.andromedad/config/config.toml
