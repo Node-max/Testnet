@@ -9,7 +9,7 @@
 cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
 andromedad tendermint unsafe-reset-all --home $HOME/.andromedad --keep-addr-book
 
-SNAP_RPC="https://rpc.andromeda.node-max.space:443"
+SNAP_RPC="https://rpc.andromeda.max-node.xyz:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
