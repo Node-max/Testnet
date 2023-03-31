@@ -2,16 +2,15 @@
 ![Image alt](https://github.com/Node-max/HOW-TO-MAKE-RPC-API/blob/main/foto/mmWl_G3q.jpg)
 
 # [WebSite](https://andromedaprotocol.io/) / [GitHub](https://github.com/andromedaprotocol) / [Discord](https://discord.gg/fnfwb3SJ)
-
-# API
-```python
-https://api.andromeda-test.max-node.xyz/
-```
-
 # RPC
 ```python
-https://rpc.andromeda-test.max-node.xyz/
+https://rpc.andromeda.max-node.xyz/
 ```
+# API
+```python
+https://api.andromeda.max-node.xyz/
+```
+
 - **if you want to create RPC, API [HOW-TO-MAKE-RPC-API](https://github.com/Node-max/HOW-TO-MAKE-RPC-API)**
 
 # Server preparation
@@ -133,7 +132,7 @@ EOF
 **Copy the entire command**
 ```python
 sudo systemctl stop andromedad
-SNAP_RPC="https://rpc.andromeda.node-max.space"; \
+SNAP_RPC="https://rpc.andromeda.max-node.xyz"; \
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash); \
@@ -144,7 +143,7 @@ s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.andromedad/config/config.toml
 
-peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@rpc.andromeda.node-max.space:26656" \
+peers="297a09dd5d004cf36ce844bd0049756a83ab54cd@rpc.andromeda.max-node.xyz:26656" \
 && sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.andromedad/config/config.toml 
 
 andromedad tendermint unsafe-reset-all --home ~/.andromedad --keep-addr-book && sudo systemctl restart andromedad && \
@@ -162,7 +161,7 @@ sudo systemctl stop andromedad
 - **Download latest snapshot**
 ```pyton
 cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
-curl https://snapshot.andromeda.max-node.xyz/andromeda/andromeda-snapshot-20230303.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+curl https://snapshots.max-node.xyz/andromeda/snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
 ```
 ```pyton
 mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json 
