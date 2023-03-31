@@ -27,7 +27,8 @@ sed -i 's|^trust_hash *=.*|trust_hash = "'$TRUST_HASH'"|' $HOME/.andromedad/conf
 
 mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json
 
-curl -s https://snapshot.node-max.space/andromeda/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+curl -s https://snapshots.max-node.xyz/andromeda/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+```
 
 ```python
 sudo systemctl restart andromedad
