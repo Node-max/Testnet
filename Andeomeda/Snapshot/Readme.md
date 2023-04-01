@@ -1,27 +1,23 @@
 # Snapshot
 
-- **install dependencies, if needed**
+### install dependencies, if needed
 ```pyton
 sudo apt update
 sudo apt install lz4 -y
 ```
-# Snapshots are taken automatically every 6 hours
-
-- **Stop Andromeda**
-```pyton
+## Instructions
+```python
+Stop the service and reset the data
 sudo systemctl stop andromedad
-```
-- **Download latest snapshot**
-```pyton
 cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
-curl https://snapshots.max-node.xyz/andromeda/snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+rm -rf $HOME/.andromedad/data
 ```
-```pyton
-mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json 
+## Download latest snapshot
+```python
+curl -L https://snapshots.max-node.xyz/andromeda/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.andromedad
+mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json
 ```
-
-- **Restart the service and check the log**
-```pyton
-sudo systemctl start andromedad
-sudo journalctl -u andromedad -f --no-hostname -o cat
+## Restart the service and check the log
+```python
+sudo systemctl start andromedad && sudo journalctl -u andromedad -f --no-hostname -o cat
 ```
