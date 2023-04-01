@@ -1,5 +1,5 @@
 # Snapshot
-## install dependencies, if needed**
+## install dependencies, if needed
 ```pyton
 sudo apt update
 sudo apt install lz4 -y
