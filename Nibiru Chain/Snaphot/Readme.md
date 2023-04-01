@@ -1,27 +1,21 @@
-## Snapshots are taken automatically each day at 21:00 UTC
-- **install dependencies, if needed**
+# Snapshot
+## install dependencies, if needed**
 ```pyton
 sudo apt update
 sudo apt install lz4 -y
 ```
-- **Stop nolus**
-
-```pyton
+## Stop the service and reset the data
+```python
 sudo systemctl stop nibid
+cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup
+rm -rf $HOME/.nibid/data
 ```
-```pyton
-cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup 
+## Download latest snapshot
+```python
+curl -L https://snapshot-test.max-node.xyz/nibiru/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
+mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json
 ```
-- **Download latest snapshot**
-```pyton
-nibid tendermint unsafe-reset-all --home $HOME/.nibid --keep-addr-book 
-curl https://snapshot-test.max-node.xyz/nibiru/snapshot.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.nolus
-```
-```pyton
-mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json 
-```
-- **Restart the service and check the log**
-```pyton
-sudo systemctl restart nibid
-journalctl -u nibid  -f --no-hostname -o cat
+## Restart the service and check the log
+```python
+sudo systemctl start nibid && sudo journalctl -u nibid -f --no-hostname -o cat
 ```
