@@ -1,19 +1,23 @@
-# install dependencies, if needed
+# Snapshop
+## install dependencies, if needed
 ```python
 sudo apt update
 sudo apt install lz4 -y
-sudo systemctl stop defundd
 ```
+## Stop the service and reset the data
 ```python
-cp $HOME/.defund/data/priv_validator_state.json $HOME/.defund/priv_validator_state.json.backup 
-
-defundd tendermint unsafe-reset-all --home $HOME/.defund --keep-addr-book 
-curl https://snapshot.max-node.xyz/defund/snapshot.tar.lz4  | lz4 -dc - | tar -xf - -C $HOME/.defund
-
-mv $HOME/.defund/priv_validator_state.json.backup $HOME/.defund/data/priv_validator_state.json 
-
-sudo systemctl start defundd
-sudo journalctl -u defundd -f --no-hostname -o cat
+sudo systemctl stop defundd
+cp $HOME/.defund/data/priv_validator_state.json $HOME/.defund/priv_validator_state.json.backup
+rm -rf $HOME/.defund/data
+```
+## Download latest snapshot
+```python
+curl -L https://snapshot.max-node.xyz/defund/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.defund
+mv $HOME/.defund/priv_validator_state.json.backup $HOME/.defund/data/priv_validator_state.json
+```
+## Restart the service and check the log
+```python
+sudo systemctl start defundd && sudo journalctl -u defundd -f --no-hostname -o cat
 ```
 
 # Live Peers
