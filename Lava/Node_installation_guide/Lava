@@ -62,8 +62,8 @@ make install
 
 lavad init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O ~/.lava/config/genesis.json https://raw.githubusercontent.com/obajay/nodes-Guides/main/Lava_Network/genesis.json
-wget -O $HOME/.lava/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Lava_Network/addrbook.json"
+wget -O ~/.lava/config/genesis.json https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/genesis.json
+wget -O $HOME/.lava/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/addrbook.json"
 
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
@@ -136,13 +136,13 @@ read Wallet
 echo export Wallet=${Wallet} >> $HOME/.bash_profile
 source ~/.bash_profile
 lavad keys add $Wallet
-echo -e "      \e[1m\e[32m!!!!!!!!!SAVE!!!!!!!!!!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!!SAVE!!!!!!!!!!!!!!!!\e[0m'"
+echo -e "      \e[1m\e[32m!!!!!!!SAVE YOUR MNEMONIC PHRASE!!!!!!!!\e[0m'"
 
 break
 ;;
-"Synchronization via StateSync")
-SNAP_RPC=https://t-lava.rpc.utsa.tech:443
-peers="433be6210ad6350bebebad68ec50d3e0d90cb305@217.13.223.167:60856"
+"StateSync")
+SNAP_RPC=https://rpc.lava.max-node.xyz:443
+peers="69549b8047c98609d9935415aec7999386eb6d07@5.182.33.99:44656"
 sed -i.bak -e  "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" ~/.lava/config/config.toml
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
@@ -173,7 +173,7 @@ sudo journalctl -u lavad -f -o cat
 
 break
 ;;
-"Synchronization via SnapShot")
+"SnapShot")
 echo -e "      \e[1m\e[32m SOOOON\e[0m"
 
 break
