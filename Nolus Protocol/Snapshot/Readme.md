@@ -1,29 +1,22 @@
 # Snapshot
 
-- **install dependencies, if needed**
+## install dependencies, if needed
 ```pyton
 sudo apt update
 sudo apt install lz4 -y
 ```
-
-- **Stop nolus**
-
-```pyton
+## Stop the service and reset the data
+```python
 sudo systemctl stop nolusd
+cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
+rm -rf $HOME/.nolus/data
 ```
-```pyton
-cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup 
+## Download latest snapshot
+```python
+curl -L https://snapshot.max-node.xyz/nolus/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
 ```
-- **Download latest snapshot**
-```pyton
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus --keep-addr-book 
-curl https://snapshot.max-node.xyz/nolus/snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nolus
+## Restart the service and check the log
+```python
+sudo systemctl start nolusd && sudo journalctl -u nolusd -f --no-hostname -o cat
 ```
-```pyton
-mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json 
-```
-- **Restart the service and check the log**
-```pyton
-systemctl restart nolusd && journalctl -u nolusd -f -o cat
-```
-
