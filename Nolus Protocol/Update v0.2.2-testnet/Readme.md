@@ -1,3 +1,4 @@
+### Download and build upgrade binaries
 # Clone project repository
 ```python
 cd $HOME
@@ -8,7 +9,6 @@ git checkout v0.2.2
 # Build binaries
 make build
 ````
-
 # Prepare binaries for Cosmovisor
 ```python
 mkdir -p $HOME/.nolus/cosmovisor/upgrades/v0.2.2/bin
