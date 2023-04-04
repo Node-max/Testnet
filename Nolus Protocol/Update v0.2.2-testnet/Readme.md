@@ -1,5 +1,5 @@
-### Download and build upgrade binaries
-# Clone project repository
+## Download and build upgrade binaries
+### Clone project repository
 ```python
 cd $HOME
 rm -rf nolus-core
