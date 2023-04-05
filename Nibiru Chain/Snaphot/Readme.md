@@ -12,7 +12,7 @@ rm -rf $HOME/.nibid/data
 ```
 ## Download latest snapshot
 ```python
-curl -L https://snapshot-test.max-node.xyz/nibiru/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
+curl -L https://snapshots.max-node.xyz/nibiru/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json
 ```
 ## Restart the service and check the log
