@@ -5,7 +5,7 @@ sudo systemctl stop nibid
 cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup
 nibid tendermint unsafe-reset-all --home $HOME/.nibid --keep-addr-book
 
-SNAP_RPC="https://rpc-nibiru.max-node.xyz:443"
+SNAP_RPC="https://rpc.nibiru.max-node.xyz:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
@@ -24,7 +24,7 @@ sed -i 's|^trust_hash *=.*|trust_hash = "'$TRUST_HASH'"|' $HOME/.nibid/config/co
 mv $HOME/.nibid/priv_validator_state.json.backup $HOME/.nibid/data/priv_validator_state.json
 ```
 ```python
-curl -s https://snapshot-test.max-node.xyz/nibiru/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nibid/data
+curl -s https://snapshots.max-node.xyz/nibiru/wasm.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nibid/data
 ```
 ```python
 sudo systemctl restart nibid
