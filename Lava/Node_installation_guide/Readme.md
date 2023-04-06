@@ -113,7 +113,7 @@ sed -i 's/timeout_broadcast_tx_commit = ".*s"/timeout_broadcast_tx_commit = "601
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/Lava/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+curl -L https://snapshots.max-node.xyz/lava/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
 [[ -f $HOME/.lava/data/upgrade-info.json ]] && cp $HOME/.lava/data/upgrade-info.json $HOME/.lava/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
