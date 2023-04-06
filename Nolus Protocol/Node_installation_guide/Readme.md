@@ -19,284 +19,119 @@ https://grpc.nolus-test.max-node.xyz/
 
 - **if you want to create RPC, API [HOW-TO-MAKE-RPC-API](https://github.com/Node-max/HOW-TO-MAKE-RPC-API)**
 
-# Auto installation
-
-```pthon
-wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Quasar/Node_installation_guide/auto_qussar && chmod +x sources && ./sources
-```
-
-# Server preparation
-
-- **Updating packages**
+# Manual installation
 ```python
-sudo apt update && sudo apt upgrade -y
+MONIKER="YOUR_MONIKER_GOES_HERE"
 ```
-- **Install developer tools and necessary packages**
+### Preparing the server
 ```python
-sudo apt install curl build-essential pkg-config libssl-dev git wget jq make gcc tmux chrony -y
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 ```
 - **Installing GO**
 ```python
-wget https://go.dev/dl/go1.18.4.linux-amd64.tar.gz; \
-rm -rv /usr/local/go; \
-tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz && \
-rm -v go1.18.4.linux-amd64.tar.gz && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-source ~/.bash_profile && \
-go version
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.20.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 ```
 # Node installation
-
-- **Clone the project repository with the node, go to the project folder and collect the binary files**
-```python
-cd $HOME 
-git clone https://github.com/Nolus-Protocol/nolus-core 
-cd nolus-core
-git checkout v0.1.39
-make install
-```
-- **Checking the version**
-```python
-nolusd version
-#0.1.39
-```
-- **Creating Variables**
-```python
-MONIKER_NOLUS=type in your name
-CHAIN_ID_NOLUS=nolus-rila
-PORT_NOLUS=37
-```
-- **Save variables, reload .bash_profile and check variable values**
-```python
-echo "export MONIKER_NOLUS="${MONIKER_NOLUS}"" >> $HOME/.bash_profile
-echo "export CHAIN_ID_NOLUS="${CHAIN_ID_NOLUS}"" >> $HOME/.bash_profile
-echo "export PORT_NOLUS="${PORT_NOLUS}"" >> $HOME/.bash_profile
-source $HOME/.bash_profile
-
-echo -e "\nmoniker_NOLUS > ${MONIKER_NOLUS}.\n"
-echo -e "\nchain_id_NOLUS > ${CHAIN_ID_NOLUS}.\n"
-echo -e "\nport_NOLUS > ${PORT_NOLUS}.\n"
-```
-- **Setting up the config**
-```python
-nolusd config chain-id $CHAIN_ID_NOLUS
-nolusd config keyring-backend test
-nolusd config node tcp://localhost:${PORT_NOLUS}657
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025unls\"/" $HOME/.nolus/config/app.toml
-```
-- **Initialize the node**
-```python
-nolusd init $MONIKER_NOLUS --chain-id $CHAIN_ID_NOLUS
-```
-- **Loading the genesis file and address book**
-```python
-wget https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/genesis.json
-mv ./genesis.json ~/.nolus/config/genesis.json
-wget -O $HOME/.nolus/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Nolus%20Protocol/Node_installation_guide/addrbook.json"
-```
-- **Adding seeds and peers**
-```python
-seeds="" 
-PEERS="$(curl -s "https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/persistent_peers.txt")"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" ~/.nolus/config/config.toml
-```
-- **Setting up pruning**
-```python
-pruning="custom"
-pruning_keep_recent="100"
-pruning_keep_every="0"
-pruning_interval="10"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.nolus/config/app.toml
-```
-- **Resetting data**
-```python
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
-```
-- **Create a service file**
-```python
-printf "[Unit]
-Description=Nolus Service
-After=network.target
-
-[Service]
-Type=simple
-User=$USER
-ExecStart=$(which nolusd) start
-Restart=on-failure
-RestartSec=3
-LimitNOFILE=65535
-
-[Install]
-WantedBy=multi-user.target" > /etc/systemd/system/nolusd.service
-```
-- **Start the service and check the logs**
-```python
-sudo systemctl daemon-reload && \
-sudo systemctl enable nolusd && \
-sudo systemctl restart nolusd && \
-sudo journalctl -u nolusd -f -o cat
-```
-- **We are waiting for the end of synchronization, you can check the synchronization with the command**
-```python
-nolusd status 2>&1 | jq .SyncInfo
-```
-If the output shows false, the sync is complete.
-
-# State sync
-```python
-sudo systemctl stop nolusd
-cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
-
-SNAP_RPC=http://rpc.nolus-test.max-node.xyz:43656
-SNAP_PEER=f299f7764b0bd293dd9f3f9b347ee5eccc519de7@5.182.33.99:43656
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
-BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-
-sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^rpc_servers *=.*|rpc_servers = \"$SNAP_RPC,$SNAP_RPC\"|" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_height *=.*|trust_height = $BLOCK_HEIGHT|" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$TRUST_HASH\"|" $HOME/.nolus/config/config.toml
-
-mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
-sudo systemctl restart nolusd && sudo journalctl -u nolusd -f -o cat
-```
-
-# Creating a wallet and validator
-
-- **Create a wallet**
-```python
-nolusd keys add $MONIKER_NOLUS
-```
-Save the mnemonic phrase in a safe place!
-
-If you participated in previous testnets, restore the wallet with the command and enter the mnemonic phrase
-```python
-nolusd keys add $MONIKER_NOLUS --recover
-```
-- **Create a variable with the address of the wallet and validator**
-```python
-WALLET_NOLUS=$(nolusd keys show $MONIKER_NOLUS -a)
-VALOPER_NOLUS=$(nolusd keys show $MONIKER_NOLUS --bech val -a)
-
-echo "export WALLET_NOLUS="${WALLET_NOLUS}"" >> $HOME/.bash_profile
-echo "export VALOPER_NOLUS="${VALOPER_NOLUS}"" >> $HOME/.bash_profile
-source $HOME/.bash_profile
-echo -e "\nwallet_NOLUS > ${WALLET_NOLUS}.\n"
-echo -e "\nvaloper_NOLUS > ${VALOPER_NOLUS}.\n"
-```
-To replenish the wallet with test tokens, go to the [Discord](https://discord.gg/nolus-protocol)  and request tokens in the testnet-faucet channel.
-
-- **Checking your balance**
-```python
-nolusd q bank balances $WALLET_NOLUS
-```
-- **After the synchronization is completed and the wallet is replenished, we create a validator**
-```python
-nolusd tx staking create-validator \
---amount 1900000unls \
---from $WALLET_NOLUS \
---commission-rate "0.07" \
---commission-max-rate "0.20" \
---commission-max-change-rate "0.1" \
---min-self-delegation "1" \
---pubkey=$(nolusd tendermint show-validator) \
---moniker $MONIKER_NOLUS \
---chain-id "nolus-rila" \
---gas-prices 0.0042unls \
---identity="" \
---details="" \
---website="" \
--y
-```
-
-# Update
-- **Stopping the node**
-```python
-sudo systemctl stop nolusd
-```
-
-- **Upgrading to v0.2.1-testnet**
+### Clone project repository
+**Clone the project repository with the node, go to the project folder and collect the binary files**
 ```python
 cd $HOME
 rm -rf nolus-core
 git clone https://github.com/Nolus-Protocol/nolus-core.git
 cd nolus-core
-git checkout v0.2.1-testnet
+git checkout v0.2.2
+### Build binaries
 make build
 ```
+### Prepare binaries for Cosmovisor
 ```python
-mkdir -p $HOME/.nolus/cosmovisor/upgrades/v0.2.1/bin
-mv target/release/nolusd $HOME/.nolus/cosmovisor/upgrades/v0.2.1/bin/
+mkdir -p $HOME/.nolus/cosmovisor/genesis/bin
+mv target/release/nolusd $HOME/.nolus/cosmovisor/genesis/bin/
 rm -rf build
 ```
-- **Checking the version**
+# Create application symlinks
 ```python
-nolusd version 
+ln -s $HOME/.nolus/cosmovisor/genesis $HOME/.nolus/cosmovisor/current
+sudo ln -s $HOME/.nolus/cosmovisor/current/bin/nolusd /usr/local/bin/nolusd
 ```
-
-## Non-Cosmovisor : 
-
-UPGRADE AT BLOCK 1327000 !!!!
-
+# Install Cosmovisor and create a service
+### Download and install Cosmovisor
 ```python
-cd $HOME
-rm -rf nolus-core
-git clone https://github.com/Nolus-Protocol/nolus-core.git
-cd nolus-core
-git checkout v0.2.1-testnet
-make install
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
-
-- **Restarting the node**
+### Create service
 ```python
-sudo systemctl restart nolusd && sudo journalctl -u nolusd -f -o cat
-```
+sudo tee /etc/systemd/system/nolusd.service > /dev/null << EOF
+[Unit]
+Description=nolus-testnet node service
+After=network-online.target
 
-# Deleting a node
-- **Before deleting a node, make sure that the files from the /root/.nolus/config directory are saved
-To remove a node, use the following commands**
-```python
-sudo systemctl stop nolusd
-sudo systemctl disable nolusd
-sudo rm -rf $HOME/.nolus
-sudo rm -rf $HOME/nolus
-sudo rm -rf /etc/systemd/system/nolusd.service
-sudo rm -rf /usr/local/bin/nolusd
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.nolus"
+Environment="DAEMON_NAME=nolusd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nolus/cosmovisor/current/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
 sudo systemctl daemon-reload
+sudo systemctl enable nolusd
 ```
-
-# Useful Commands
-- **Node restart**
+# Initialize the node
+### Set node configuration
 ```python
-sudo systemctl restart nolusd
+nolusd config chain-id nolus-rila
+nolusd config keyring-backend test
+nolusd config node tcp://localhost:43657
 ```
-- **Checking logs**
+### Initialize the node
 ```python
-sudo journalctl -u nolusd -f -o cat
+nolusd init $MONIKER --chain-id nolus-rila
 ```
-- **Find out the address of the validator**
+### Download genesis and addrbook
 ```python
-nolusd keys show $MONIKER_NOLUS --bech val -a
+curl -Ls https://snapshot.max-node.xyz/nolus/config/genesis.json
+curl -Ls https://snapshot.max-node.xyz/nolus/config/addrbook.json
 ```
-- **Delegate tokens to validator**
+### Add seeds
 ```python
-nolusd tx staking delegate nolusvaloper19qk8hgjvqaxrrv4f5l83dumq6th3uqvugxeyyy 90000000 --from $WALLET_NOLUS --chain-id $CHAIN_ID_NOLUS
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.nolus-test.max-node.xyz:43657\"|" $HOME/.nolus/config/config.toml
 ```
-- **Make changes to the validator**
+### Set minimum gas price
 ```python
-nolusd tx staking edit-validator --identity="" --details="" --website="" \
---from $WALLET_NOLUS --chain-id $CHAIN_ID_NOLUS -y
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.0025unls\"|" $HOME/.nolus/config/app.toml
 ```
-#identity - PGP key from keybase.io (sets validator avatar) \
-#details - textual description of the validator
-
-
+### Set pruning
+```python
+sed -i \
+  -e 's|^pruning *=.*|pruning = "nothing"|' \
+  $HOME/.nolus/config/app.toml
+```
+### Set custom ports
+```python
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:43658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:43657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:43060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:43656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":43660\"%" $HOME/.nolus/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://
+```
+# Download latest chain snapshot
+```python
+curl -L https://snapshot.max-node.xyz/nolus/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+[[ -f $HOME/.nolus/data/upgrade-info.json ]] && cp $HOME/.nolus/data/upgrade-info.json $HOME/.nolus/cosmovisor/genesis/upgrade-info.json
+```
+### Start service and check the logs
+```python
+sudo systemctl start nolusd && sudo journalctl -u nolusd -f --no-h
+```
 
 
 
