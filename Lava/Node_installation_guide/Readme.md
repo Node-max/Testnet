@@ -1,8 +1,3 @@
-# Auto_install script
-```python
-wget -O lava https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/Lava && chmod +x lava && ./lava
-```
-
 # Manual installation
 
 ```python
