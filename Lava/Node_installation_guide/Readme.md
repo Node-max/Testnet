@@ -5,200 +5,123 @@ wget -O lava https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_i
 
 # Manual installation
 
+```python
+MONIKER="YOUR_MONIKER_GOES_HERE"
+```
 ### Preparing the server
-
 ```python
-sudo apt update && sudo apt upgrade -y
-sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 ```
-
-## GO 1.19
-
+### GO 1.19
 ```python
-ver="1.19" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.20.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 ```
-
-# Build 28.03.23
+### Clone project repository
 ```python
 cd $HOME
-git clone https://github.com/lavanet/lava
+rm -rf lava
+git clone https://github.com/lavanet/lava.git
 cd lava
-git fetch --all
 git checkout v0.8.1
-make install
+### Build binaries
+make build
 ```
-*******UPDATE******* 28.03.23
-
+### Prepare binaries for Cosmovisor
 ```python
-cd $HOME/lava
-git fetch --all
-git checkout v0.8.1
-make install
-lavad version --long | head
-sudo systemctl restart lavad && sudo journalctl -u lavad -f -o cat
+mkdir -p $HOME/.lava/cosmovisor/genesis/bin
+mv build/lavad $HOME/.lava/cosmovisor/genesis/bin/
+rm -rf build
+``` 
+### Create application symlinks
+```python
+ln -s $HOME/.lava/cosmovisor/genesis $HOME/.lava/cosmovisor/current
+sudo ln -s $HOME/.lava/cosmovisor/current/bin/lavad /usr/local/bin/lavad
 ```
-
-`lavad version --long | head`
-- version: 0.8.1
-- commit: 910bfdf6fca1ba4030f4587c3f5af3382a8b5238
-
+# Install Cosmovisor and create a service
+### Download and install Cosmovisor
 ```python
-lavad init STAVRguide --chain-id lava-testnet-1
-lavad config chain-id lava-testnet-1
-```    
-
-## Create/recover wallet
-```python
-lavad keys add <walletname>
-      OR
-lavad keys add <walletname> --recover
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
-
-## Download Genesis
+### Create service
 ```python
-wget -O ~/.lava/config/genesis.json https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/genesis.json
-```
-`sha256sum $HOME/.lava/config/genesis.json`
-+ 72170a8a7314cb79bc57a60c1b920e26457769667ce5c2ff0595b342c0080d78
-
-## Set up the minimum gas price and Peers/Seeds/Filter peers/MaxPeers
-```python
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ulava\"/" $HOME/.lava/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.lava/config/config.toml
-external_address=$(wget -qO- eth0.me) 
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.lava/config/config.toml
-peers="3a445bfdbe2d0c8ee82461633aa3af31bc2b4dc0@prod-pnet-seed-node.lavanet.xyz:26656,e593c7a9ca61f5616119d6beb5bd8ef5dd28d62d@prod-pnet-seed-node2.lavanet.xyz:26656"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.lava/config/config.toml
-seeds=""
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.lava/config/config.toml
-sed -i 's/create_empty_blocks = .*/create_empty_blocks = true/g' ~/.lava/config/config.toml
-sed -i 's/create_empty_blocks_interval = ".*s"/create_empty_blocks_interval = "60s"/g' ~/.lava/config/config.toml
-sed -i 's/timeout_propose = ".*s"/timeout_propose = "60s"/g' ~/.lava/config/config.toml
-sed -i 's/timeout_commit = ".*s"/timeout_commit = "60s"/g' ~/.lava/config/config.toml
-sed -i 's/timeout_broadcast_tx_commit = ".*s"/timeout_broadcast_tx_commit = "601s"/g' ~/.lava/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.lava/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.lava/config/config.toml
-
-```
-### Pruning (optional)
-```python
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" ~/.lava/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" ~/.lava/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" ~/.lava/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" ~/.lava/config/app.toml
-```
-### Indexer (optional) 
-```python
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.lava/config/config.toml
-```
-
-## Download addrbook
-```python
-wget -O $HOME/.lava/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/addrbook.json"
-```
-## StateSync
-```python
-SNAP_RPC=https://rpc.lava.max-node.xyz:443
-peers="69549b8047c98609d9935415aec7999386eb6d07@5.182.33.99:44656"
-sed -i.bak -e  "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" ~/.lava/config/config.toml
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
-s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.lava/config/config.toml
-lavad tendermint unsafe-reset-all --home /root/.lava --keep-addr-book
-sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"1500\"/" $HOME/.lava/config/app.toml
-systemctl restart lavad && journalctl -u lavad -f -o cat
-```
-
-## SnapShot
-### Stop the service and reset the data
-```python
-sudo systemctl stop lavad
-```
-```python
-cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
-rm -rf $HOME/.lava/data
-```
-### Download latest snapshot
-```python
-curl -L https://snapshots.max-node.xyz/Lava/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
-mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
-```
-### Restart the service and check the log
-```python
-sudo systemctl start lavad && sudo journalctl -u lavad -f --no-hostname -o cat
-```
-
-# Create a service file
-```python
-sudo tee /etc/systemd/system/lavad.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/lavad.service > /dev/null << EOF
 [Unit]
-Description=lava
+Description=lava-testnet node service
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which lavad) start
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.lava"
+Environment="DAEMON_NAME=lavad"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
-```
-
-## Start
-```python
 sudo systemctl daemon-reload
 sudo systemctl enable lavad
-sudo systemctl restart lavad && sudo journalctl -u lavad -f -o cat
 ```
-
-## Delete node
-```bash
-sudo systemctl stop lavad && \
-sudo systemctl disable lavad && \
-rm /etc/systemd/system/lavad.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf GHFkqmTzpdNLDd6T && \
-rm -rf .lava && \
-rm -rf $(which lavad)
-```
-#
-### Sync Info
+# Initialize the node
+### Set node configuration
 ```python
-lavad status 2>&1 | jq .SyncInfo
+lavad config chain-id lava-testnet-1
+lavad config keyring-backend test
+lavad config node tcp://localhost:44657
 ```
-### NodeINfo
+### Initialize the node
 ```python
-lavad status 2>&1 | jq .NodeInfo
+lavad init $MONIKER --chain-id lava-testnet-1
 ```
-### Check node logs
-```python
-sudo journalctl -u lavad -f -o cat
+### Download genesis and addrbook
+```pythom
+curl -Ls https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/genesis.json
+curl -Ls https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/addrbook.json
 ```
-### Check Balance
+### Add seeds
 ```python
-lavad query bank balances lava@1a2pvmd..............rflml4hg2a0x3ky
+sed -i -e "s|^seeds *=.*|seeds = \"69549b8047c98609d9935415aec7999386eb6d07@rpc.lava.max-node.xyz:44657\"|" $HOME/.lava/config/config.toml
+```
+### Set minimum gas price
+```python
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0ulava\"|" $HOME/.lava/config/app.toml
+```
+### Set pruning
+```python
+sed -i \
+  -e 's|^pruning *=.*|pruning = "custom"|' \
+  -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+  -e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
+  -e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+  $HOME/.lava/config/app.toml
+```
+### Set custom ports
+```python
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:44658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:44657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:44060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:44656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":44660\"%" $HOME/.lava/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:44317\"%; s%^address = \":8080\"%address = \":44080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:44090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:44091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:44545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:44546\"%" $HOME/.lava/config/app.toml
+```
+### Update chain specific configuration
+```python
+sed -i 's/create_empty_blocks = .*/create_empty_blocks = true/g' $HOME/.lava/config/config.toml
+sed -i 's/create_empty_blocks_interval = ".*s"/create_empty_blocks_interval = "60s"/g' $HOME/.lava/config/config.toml
+sed -i 's/timeout_propose = ".*s"/timeout_propose = "60s"/g' $HOME/.lava/config/config.toml
+sed -i 's/timeout_commit = ".*s"/timeout_commit = "60s"/g' $HOME/.lava/config/config.toml
+sed -i 's/timeout_broadcast_tx_commit = ".*s"/timeout_broadcast_tx_commit = "601s"/g' $HOME/.lava/config/config.toml
+```
+### Download latest chain snapshot
+```python
+curl -L https://snapshots.max-node.xyz/Lava/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+[[ -f $HOME/.lava/data/upgrade-info.json ]] && cp $HOME/.lava/data/upgrade-info.json $HOME/.lava/cosmovisor/genesis/upgrade-info.json
+```
+### Start service and check the logs
+```python
+sudo systemctl start lavad && sudo journalctl -u lavad -f --no-hostname
 ```
