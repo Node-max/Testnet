@@ -1,5 +1,3 @@
-# SnapShot updated every 6 hours
-
 # Instructions
 - **Stop the service and reset the data**
 ```python
