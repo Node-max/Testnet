@@ -161,7 +161,7 @@ sudo systemctl stop andromedad
 - **Download latest snapshot**
 ```pyton
 cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
-curl https://snapshots.max-node.xyz/andromeda/snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.andromedad
+curl https://snapshots.max-node.xyz/andromeda/andromeda_latest.tar | tar -xf - -C $HOME/.andromedad
 ```
 ```pyton
 mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json 
