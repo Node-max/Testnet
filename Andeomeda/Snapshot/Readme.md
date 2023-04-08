@@ -14,7 +14,7 @@ rm -rf $HOME/.andromedad/data
 ```
 ## Download latest snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/andromeda/snapshot_latest.tar | tar -xf - -C $HOME/.andromedad
+curl -L https://snapshots.max-node.xyz/andromeda/andromeda_latest.tar | tar -xf - -C $HOME/.andromedad
 mv $HOME/.andromedad/priv_validator_state.json.backup $HOME/.andromedad/data/priv_validator_state.json
 ```
 ## Restart the service and check the log
