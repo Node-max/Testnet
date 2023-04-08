@@ -80,7 +80,7 @@ lavad init $MONIKER --chain-id lava-testnet-1
 ### Download genesis and addrbook
 ```pythom
 curl -Ls https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/genesis.json
-curl -Ls https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/addrbook.json
+curl -Ls https://snapshots.max-node.xyz/lava/addrbook.json
 ```
 ### Add seeds
 ```python
@@ -114,8 +114,8 @@ sed -i 's/timeout_broadcast_tx_commit = ".*s"/timeout_broadcast_tx_commit = "601
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/lava/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
-[[ -f $HOME/.lava/data/upgrade-info.json ]] && cp $HOME/.lava/data/upgrade-info.json $HOME/.lava/cosmovisor/genesis/upgrade-info.json
+curl -L https://snapshots.max-node.xyz/lava/_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 ```
 ### Start service and check the logs
 ```python
