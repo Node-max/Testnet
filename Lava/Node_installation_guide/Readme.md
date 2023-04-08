@@ -79,7 +79,7 @@ lavad init $MONIKER --chain-id lava-testnet-1
 ```
 ### Download genesis and addrbook
 ```pythom
-curl -Ls https://raw.githubusercontent.com/Node-max/Testnet/main/Lava/Node_installation_guide/genesis.json
+curl -Ls https://snapshots.max-node.xyz/lava/genesis.json
 curl -Ls https://snapshots.max-node.xyz/lava/addrbook.json
 ```
 ### Add seeds
