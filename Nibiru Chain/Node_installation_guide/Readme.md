@@ -1,163 +1,200 @@
-# Auto installation
-```pyhon
-wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Nibiru%20Chain/Node_installation_guide/nibiru && chmod +x sources && ./sources
-```
-
 # Manual installation
-
+### Setup validator name
+```python
+MONIKER="YOUR_MONIKER_GOES_HERE"
+```
 ### Preparing the server
 ```python
-sudo apt update && sudo apt upgrade -y && \
-sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 ```
-
-## GO 19 (one command) 
+### GO 1.19
 ```python
-ver="1.19" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.20.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 ```
-
-# Binary   27.02.23
-```python 
+# Node installation
+### Clone project repository
+```python
 cd $HOME
-git clone https://github.com/NibiruChain/nibiru
+rm -rf nibiru
+git clone https://github.com/NibiruChain/nibiru.git
 cd nibiru
 git checkout v0.19.2
-make install
+# Build binaries
+make build
 ```
-
-## Initialisation
+### Prepare binaries for Cosmovisor
 ```python
-nibid init <your name> --chain-id=nibiru-itn-1
-nibid config chain-id nibiru-itn-1
-
+mkdir -p $HOME/.nibid/cosmovisor/genesis/bin
+mv build/nibid $HOME/.nibid/cosmovisor/genesis/bin/
+rm -rf build
+``` 
+### Create application symlinks
+```python
+ln -s $HOME/.nibid/cosmovisor/genesis $HOME/.nibid/cosmovisor/current
+sudo ln -s $HOME/.nibid/cosmovisor/current/bin/nibid /usr/local/bin/nibid
 ```
-## Add wallet
+# Install Cosmovisor and create a service
+### Download and install Cosmovisor
 ```python
-nibid keys add <walletName>
-nibid keys add <walletName> --recover
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
-# Genesis
+### Create service
 ```python
-wget -O $HOME/.nibid/config/genesis.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Nibiru%20Chain/Node_installation_guide/genesis.json"
-```
-
-`sha256sum $HOME/.nibid/config/genesis.json`
-- e162ace87f5cbc624aa2a4882006312ef8762a8a549cf4a22ae35bba12482c72  genesis.json
-
-### Pruning
-```python
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" ~/.nibid/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" ~/.nibid/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" ~/.nibid/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" ~/.nibid/config/app.toml
-```
-### Indexer (optional) one command
-```python
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.nibid/config/config.toml
-```
-
-### Set up the minimum gas price and Peers/Seeds/Filter peers
-```python
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0unibi\"/;" ~/.nibid/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.nibid/config/config.toml
-external_address=$(wget -qO- eth0.me) 
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.nibid/config/config.toml
-peers=""
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.nibid/config/config.toml
-seeds="b268ce3c0eba0ce89995fa04a0a639ad8c9c0784@194.163.168.178:29656,83be009ed822ad05d877c26bfa457c95551128c0@167.99.249.130:26656"
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.nibid/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.nibid/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.nibid/config/config.toml
-
-```
-
-## Download addrbook
-```python
-wget -O $HOME/.nibid/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Nibiru%20Chain/Node_installation_guide/addrbook.json"
-```
-
-# Create a service file
-```python
-sudo tee /etc/systemd/system/nibid.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/nibid.service > /dev/null << EOF
 [Unit]
-Description=nibiru
+Description=nibiru-testnet node service
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which nibid) start
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.nibid"
+Environment="DAEMON_NAME=nibid"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nibid/cosmovisor/current/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable nibid
+```
+# Initialize the node
+### Set node configuration
+```python
+nibid config chain-id nibiru-itn-1
+nibid config keyring-backend test
+nibid config node tcp://localhost:39657
+```
+### Initialize the node
+```python
+nibid init $MONIKER --chain-id nibiru-itn-1
+```
+### Download genesis and addrbook
+```pythom
+curl -Ls https://snapshot.max-node.xyz/nibiru/genesis.json > $HOME/.nibid/config/genesis.json
+curl -Ls https://snapshot.max-node.xyz/nibiru/addrbook.json > $HOME/.nibid/config/addrbook.json
+```
+### Add seeds
+```python
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.nibiru.max-node.xyz:39657\"|" $HOME/.nibid/config/config.toml
+```
+### Set minimum gas price
+```python
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.025unibi\"|" $HOME/.nibid/config/app.toml```
+### Set pruning
+```python
+sed -i \
+  -e 's|^pruning *=.*|pruning = "custom"|' \
+  -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+  -e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
+  -e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+  $HOME/.nibid/config/app.toml
+```
+### Set custom ports
+```python
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:39658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:39657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:39060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:39656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":39660\"%" $HOME/.nibid/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:39317\"%; s%^address = \":8080\"%address = \":39080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:39090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:39091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:39545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:39546\"%" $HOME/.nibid/config/app.toml
+```
+### Download latest chain snapshot
+```python
+curl -L https://snapshot.max-node.xyz/nibiru/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
+[[ -f $HOME/.nibid/data/upgrade-info.json ]] && cp $HOME/.nibid/data/upgrade-info.json $HOME/.nibid/cosmovisor/genesis/upgrade-info.json
+```
+### Start service and check the logs
+```python
+sudo systemctl start nibid && sudo journalctl -u nibid -f --no-hostname -o cat
+```
+
+
+# Set up a pricefeeder
+## To run pricefeeder you validator should be in active set. Otherwise price feeder will not vote on periods.
+### Install the pricefeeder binary
+```python
+curl -s https://get.nibiru.fi/pricefeeder! | bash
+```
+### Create new wallet for pricefeeder and save 24 word mnemonic phrase
+```python
+nibid keys add pricefeeder-wallet
+```
+## Top up the pricefeeder-wallet going to Nibiru Discord [#faucet](https://discord.gg/nibiru) channel.
+## In order to make pricefeeder work, it needs some testnet tokens to pay for transaction fees
+## Export pricefeeder mnemonic into environment variable
+```python
+export FEEDER_MNEMONIC="my pricefeeder 24 word mnemonic phrase goes here ..."
+```
+### Setup the systemd service
+```python
+export CHAIN_ID="nibiru-itn-1"
+export GRPC_ENDPOINT="localhost:39090"
+export WEBSOCKET_ENDPOINT="ws://localhost:39657/websocket"
+export EXCHANGE_SYMBOLS_MAP='{ "bitfinex": { "ubtc:uusd": "tBTCUSD", "ueth:uusd": "tETHUSD", "uusdt:uusd": "tUSTUSD" }, "binance": { "ubtc:uusd": "BTCUSD", "ueth:uusd": "ETHUSD", "uusdt:uusd": "USDTUSD", "uusdc:uusd": "USDCUSD", "uatom:uusd": "ATOMUSD", "ubnb:uusd": "BNBUSD", "uavax:uusd": "AVAXUSD", "usol:uusd": "SOLUSD", "uada:uusd": "ADAUSD", "ubtc:unusd": "BTCUSD", "ueth:unusd": "ETHUSD", "uusdt:unusd": "USDTUSD", "uusdc:unusd": "USDCUSD", "uatom:unusd": "ATOMUSD", "ubnb:unusd": "BNBUSD", "uavax:unusd": "AVAXUSD", "usol:unusd": "SOLUSD", "uada:unusd": "ADAUSD" } }'
+export VALIDATOR_ADDRESS=$(nibid keys show wallet --bech val -a)
+
+sudo tee /etc/systemd/system/pricefeeder.service<<EOF
+[Unit]
+Description=Nibiru Pricefeeder
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+User=$USER
+Group=$USER
+ExecStart=/usr/local/bin/pricefeeder
+Restart=on-failure
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+PermissionsStartOnly=true
+LimitNOFILE=65535
+Environment=CHAIN_ID='$CHAIN_ID'
+Environment=GRPC_ENDPOINT='$GRPC_ENDPOINT'
+Environment=WEBSOCKET_ENDPOINT='$WEBSOCKET_ENDPOINT'
+Environment=EXCHANGE_SYMBOLS_MAP='$EXCHANGE_SYMBOLS_MAP'
+Environment=FEEDER_MNEMONIC='$FEEDER_MNEMONIC'
+Environment=VALIDATOR_ADDRESS='$VALIDATOR_ADDRESS'
 
 [Install]
 WantedBy=multi-user.target
 EOF
 ```
-
-# Start node (one command)
+## Delegate pricefeeder responsibility
+### As a validator, if you'd like another account to post prices on your behalf (i.e. you don't want your validator mnemonic sending txs), you can delegate pricefeeder responsibilities to another nibi address.
 ```python
-sudo systemctl daemon-reload
-sudo systemctl enable nibid
-sudo systemctl restart nibid && sudo journalctl -u nibid -f -o cat
+nibid tx oracle set-feeder $(nibid keys show pricefeeder-wallet -a) --from wallet
 ```
-
-## Create validator
-```
-nibid tx staking create-validator \
---amount=1000000unibi \
---pubkey=$(nibid tendermint show-validator) \
---moniker=<your name>  \
---chain-id=nibiru-itn-1 \
---commission-rate="0.10" \
---commission-max-rate="0.20" \
---commission-max-change-rate="0.1" \
---min-self-delegation="1" \
---from=<walletname> \
---identity="" \
---details="" \
---website="" \
--y
-```
-
-### Delete node (one command)
+### Register and start the systemd service
 ```python
-sudo systemctl stop nibid && \
-sudo systemctl disable nibid && \
-rm /etc/systemd/system/nibid.service && \
 sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf .nibid && \
-rm -rf nibiru && \
-rm -rf $(which nibid)
+sudo systemctl enable pricefeeder && \
+sudo systemctl start pricefeeder
 ```
-#
-### Sync Info
+### View pricefeeder logs
 ```python
-nibid status 2>&1 | jq .SyncInfo
+journalctl -fu pricefeeder
 ```
-### NodeINfo
+### Successfull Log examples:
 ```python
-nibid status 2>&1 | jq .NodeInfo
+Feb 27 19:09:33 pricefeeder[3632198]: {"level":"info","voting-period-height":405780,"tx-hash":"8FC418510A2BBFEF6E2FF17108B5D1C909B14DC0AFB22129A73C7373E649329F","time":1677521373,"message":"successfully forwarded prices"}
+Feb 27 19:09:48 pricefeeder[3632198]: {"level":"info","voting-period":{"Height":405790},"time":1677521388,"message":"new voting period"}
+Feb 27 19:09:48 pricefeeder[3632198]: {"level":"info","voting-period-height":405790,"vote":{"salt":"337","exchange_rates":"(unibi:unusd,0.066667000000000000)|(ubtc:unusd,23296.630000000000000000)|(ueth:unusd,1628.900000000000000000)|(uatom:unusd,12.760000000000000000)|(ubnb:unusd,301.740800000000000000)|(uusdc:unusd,0.999900000000000000)|(uusdt:unusd,1.000100000000000000)|(unibi:uusd,0.066667000000000000)|(ubtc:uusd,23314.000000000000000000)|(ueth:uusd,1629.900000000000000000)|(uatom:uusd,12.760000000000000000)|(ubnb:uusd,301.740800000000000000)|(uusdc:uusd,0.999900000000000000)|(uusdt:uusd,1.000100000000000000)","feeder":"nibi1w9d0u9ln9tx9dnn5qku9977jn2rtrupxxx0lrn","validator":"nibivaloper195w5wxp8hgqgz7schdukq7u5kadc2tnrsc00a0"},"time":1677521388,"message":"prepared vote message"}
+Feb 27 19:09:50 pricefeeder[3632198]: {"level":"info","voting-period-height":405790,"tx-hash":"ACB94C8421AE056468BDAAE68655D86CEB87FB6881A526A31A7A2E98234C8D13","time":1677521390,"message":"successfully forwarded prices"}
+Feb 27 19:10:05 pricefeeder[3632198]: {"level":"info","voting-period":{"Height":405800},"time":1677521405,"message":"new voting period"}
+Feb 27 19:10:05 pricefeeder[3632198]: {"level":"info","voting-period-height":405800,"vote":{"salt":"3334","exchange_rates":"(unibi:unusd,0.066667000000000000)|(ubtc:unusd,23296.680000000000000000)|(ueth:unusd,1628.780000000000000000)|(uatom:unusd,12.760000000000000000)|(ubnb:unusd,301.740800000000000000)|(uusdc:unusd,0.999900000000000000)|(uusdt:unusd,1.000100000000000000)|(unibi:uusd,0.066667000000000000)|(ubtc:uusd,23296.680000000000000000)|(ueth:uusd,1628.780000000000000000)|(uatom:uusd,12.760000000000000000)|(ubnb:uusd,301.740800000000000000)|(uusdc:uusd,0.999900000000000000)|(uusdt:uusd,1.000100000000000000)","feeder":"nibi1w9d0u9ln9tx9dnn5qku9977jn2rtrupxxx0lrn","validator":"nibivaloper195w5wxp8hgqgz7schdukq7u5kadc2tnrsc00a0"},"time":1677521405,"message":"prepared vote message"}
+Feb 27 19:10:06 pricefeeder[3632198]: {"level":"info","voting-period-height":405800,"tx-hash":"1E85AD6307DD8D734AAB6565CC57FB09F0EA0F7CFE0B8EE8AB50FC8A08B4111A","time":1677521406,"message":"successfully forwarded prices"}
+Feb 27 19:10:22 pricefeeder[3632198]: {"level":"info","voting-period":{"Height":405810},"time":1677521422,"message":"new voting period"}
+Feb 27 19:10:22 pricefeeder[3632198]: {"level":"info","voting-period-height":405810,"vote":{"salt":"9672","exchange_rates":"(unibi:unusd,0.066667000000000000)|(ubtc:unusd,23310.000000000000000000)|(ueth:unusd,1630.010000000000000000)|(uatom:unusd,12.760000000000000000)|(ubnb:unusd,301.737500000000000000)|(uusdc:unusd,0.999900000000000000)|(uusdt:unusd,1.000000000000000000)|(unibi:uusd,0.066667000000000000)|(ubtc:uusd,23307.000000000000000000)|(ueth:uusd,1629.200000000000000000)|(uatom:uusd,12.760000000000000000)|(ubnb:uusd,301.737500000000000000)|(uusdc:uusd,0.999900000000000000)|(uusdt:uusd,1.000000000000000000)","feeder":"nibi1w9d0u9ln9tx9dnn5qku9977jn2rtrupxxx0lrn","validator":"nibivaloper195w5wxp8hgqgz7schdukq7u5kadc2tnrsc00a0"},"time":1677521422,"message":"prepared vote message"}
+Feb 27 19:10:23 pricefeeder[3632198]: {"level":"info","voting-period-height":405810,"tx-hash":"24B3B16FB8B6B047885928FB6A254D7B0B44E17E0DC6AF37B1F077F78C7099A9","time":1677521423,"message":"successfully forwarded prices"}
 ```
-### Check node logs
-```python
-sudo journalctl -u nibid -f -o cat
-```
-### Check Balance
-```python
-nibid query bank balances nibi1ksau2q.........45gkecvdpgc5y8cqal9w
-```
+## Also you can check that your pricefeeder-wallet is doing transactions on chain at Chain Explorer
+![image](https://user-images.githubusercontent.com/61777095/230730115-8b8f3278-acde-41f3-b4c4-f661c7c118fc.png)
+
 
