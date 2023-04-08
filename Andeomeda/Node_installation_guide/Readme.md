@@ -76,7 +76,8 @@ andromedad config node tcp://localhost:47657
 ```
 ### Initialize the node
 ```python
-andromedad init $MONIKER --chain-id galileo-3```
+andromedad init $MONIKER --chain-id galileo-3
+```
 ### Download genesis and addrbook
 ```pythom
 curl -Ls https://snapshots.max-node.xyz/andromeda/genesis.json
