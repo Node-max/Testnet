@@ -1,5 +1,5 @@
 # Manual installation
-
+### Setup validator name
 ```python
 MONIKER="YOUR_MONIKER_GOES_HERE"
 ```
