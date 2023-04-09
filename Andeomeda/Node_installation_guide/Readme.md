@@ -108,7 +108,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:47317\"
 ### Download latest chain snapshot
 ```python
 curl -L https://snapshots.max-node.xyz/andromeda/galileo-3_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
-mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
+[[ -f $HOME/.andromedad/data/upgrade-info.json ]] && cp $HOME/.andromedad/data/upgrade-info.json $HOME/.andromedad/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
 ```python
