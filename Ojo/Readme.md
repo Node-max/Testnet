@@ -5,8 +5,8 @@
 https://ojo.explorers.guru/
 
 # Public endpoints
-api: https://api.ojo.max-node.xyz
-rpc: https://rpc.ojo.max-node.xyz
+api: https://api.ojo.max-node.xyz \
+rpc: https://rpc.ojo.max-node.xyz \
 grpc: https://grpc.ojo.max-node.xyz:50090
 
 
