@@ -6,7 +6,7 @@ https://andromeda.explorers.guru/
 
 # Public endpoints
 api: https://api.andromeda.max-node.xyz \
-rpc: https://rpc.andromeda.max-node.xyz \
+rpc: https://rpc.andromeda.max-node.xyz 
 
 # Peering
 ### state-sync
