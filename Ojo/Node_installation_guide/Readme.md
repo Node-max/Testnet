@@ -85,7 +85,7 @@ curl -Ls https://snapshots.max-node.xyz/ojo/addrbook.json > $HOME/.ojo/config/ad
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@ojo-testnet.rpc.kjnodes.com:50659\"|" $HOME/.ojo/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.ojo.max-node.xyz:50659\"|" $HOME/.ojo/config/config.toml
 ```
 ### Set minimum gas price
 ```python
