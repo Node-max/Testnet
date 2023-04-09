@@ -1,20 +1,4 @@
-## [DISCORT](https://discord.gg/jQuAJrJz) / [TWITER](https://twitter.com/defund_finance) / [GITHUB](https://github.com/defund-labs) 
-RPC
-```python
-https://rpc.defund.max-node.xyz/
-```
-API
-```python
-https://api.defund.max-node.xyz/
-````
-gRPC
-```python
-http://grpc.defund.max-node.xyz/
-```
-
-# [Snapshot](https://github.com/Node-max/Testnet/tree/main/DeFund/Snapshot)
-
-# Chain ID: galileo-3 | Latest Version Tag: galileo-3-v1.1.0-beta1 
+# Chain ID: orbit-alpha-1 | Latest Version Tag: v0.2.6 
 # [Website](https://www.defund.app/) | [Discord](https://discord.gg/jQuAJrJz) | [Twitter](https://twitter.com/defund_finance)
 
 # Chain explorer
