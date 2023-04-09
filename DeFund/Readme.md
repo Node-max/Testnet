@@ -1,11 +1,11 @@
 ## [DISCORT](https://discord.gg/jQuAJrJz) / [TWITER](https://twitter.com/defund_finance) / [GITHUB](https://github.com/defund-labs) 
 RPC
 ```python
-https://rpc-defund.max-node.xyz/
+https://rpc.defund.max-node.xyz/
 ```
 API
 ```python
-https://api-defund.max-node.xyz/
+https://api.defund.max-node.xyz/
 ````
 gRPC
 ```python
