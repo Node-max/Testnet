@@ -1,17 +1,3 @@
-## [WEBSITE](https://lavanet.xyz/) / [DISCORT](https://discord.gg/lavanetxyz) / [TWITER](https://twitter.com/lavanetxyz) / [MEDIUM](https://medium.com/lava-network) / [DOC](https://docs.lavanet.xyz/)
-# RPC
-```python
-https://rpc.lava.max-node.xyz
-```
-# API
-```python
-https://api.lava.max-node.xyz
-```
-# gRPC
-```python
-https://grpc.lava.max-node.xyz
-```
-
 # Chain ID: lava-testnet-1 | Latest Version Tag: v0.8.1 
 # [Website](https://lavanet.xyz/) | [Discord](https://discord.gg/MFVXjqqC) | [Twitter](https://twitter.com/lavanetxyz)
 
