@@ -1,6 +1,3 @@
-[WEBSITE](https://defund.app/) /
-[GitHub](https://github.com/defund-labs/testnet)
-
 # Manual installation
 ### Setup validator name
 ```python
@@ -110,7 +107,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:40317\"
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshot.max-node.xyz/defund/snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.defund
+curl -L https://snapshot.max-node.xyz/defund/_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.defund
 [[ -f $HOME/.defund/data/upgrade-info.json ]] && cp $HOME/.defund/data/upgrade-info.json $HOME/.defund/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
