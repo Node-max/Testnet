@@ -80,8 +80,8 @@ andromedad init $MONIKER --chain-id galileo-3
 ```
 ### Download genesis and addrbook
 ```pythom
-curl -Ls https://snapshots.max-node.xyz/andromeda/genesis.json
-curl -Ls https://snapshots.max-node.xyz/andromeda/addrbook.json
+curl -Ls https://snapshots.max-node.xyz/andromeda/genesis.json > $HOME/.andromedad/config/genesis.json
+curl -Ls https://snapshots.max-node.xyz/andromeda/addrbook.json > $HOME/.andromedad/config/addrbook.json
 ```
 ### Add seeds
 ```python
@@ -107,7 +107,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:47317\"
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/andromeda/galileo-3_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+curl -L https://snapshots.max-node.xyz/andromeda/galileo-3_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.andromeda
 [[ -f $HOME/.andromedad/data/upgrade-info.json ]] && cp $HOME/.andromedad/data/upgrade-info.json $HOME/.andromedad/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
