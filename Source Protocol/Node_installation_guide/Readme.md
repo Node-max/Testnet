@@ -1,167 +1,115 @@
-<img width="460" alt="image" src="https://user-images.githubusercontent.com/61777095/225799416-e582b3ae-af3b-496e-9e2e-31711541113c.png">
-
-
-# Auto installation
-```python
-wget -O sources https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/auto_install_Source && chmod +x sources && ./sources
-```
-
 # Manual installation
-
+### Setup validator name
+```python
+MONIKER="YOUR_MONIKER_GOES_HERE"
+```
 ### Preparing the server
 ```python
-sudo apt update && sudo apt upgrade -y && \
-sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 ```
-
-## GO 19.4 (one command)
+### GO 1.19
 ```python
-cd $HOME && \
-ver="1.19.4" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.20.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 ```
-
-# Binary   01.08.22
-```python 
-git clone -b testnet https://github.com/Source-Protocol-Cosmos/source.git
-cd ~/source
-make install
-```
-`sourced version --long | head`
-- version: v1.0.0-2-ge06b810
-- commit: e06b810e842e57ec8f5432c9cdd57883a69b3cee 
-
-## Initialisation
+# Node installation
+### Clone project repository
 ```python
-sourced init <your name> --chain-id=sourcechain-testnet
+cd $HOME
+rm -rf source
+git clone https://github.com/Source-Protocol-Cosmos/source.git
+cd source
+git checkout e06b810e842e57ec8f5432c9cdd57883a69b3cee
+# Build binaries
+make build
 ```
-## Add wallet
+### Prepare binaries for Cosmovisor
 ```python
-sourced keys add <walletName>
-    or
-sourced keys add <walletName> --recover
+mkdir -p $HOME/.source/cosmovisor/genesis/bin
+mv bin/sourced $HOME/.source/cosmovisor/genesis/bin/
+rm -rf build
+``` 
+### Create application symlinks
+```python
+ln -s $HOME/.source/cosmovisor/genesis $HOME/.source/cosmovisor/current
+sudo ln -s $HOME/.source/cosmovisor/current/bin/sourced /usr/local/bin/sourced
 ```
-# Genesis
+# Install Cosmovisor and create a service
+### Download and install Cosmovisor
 ```python
-curl -s  https://raw.githubusercontent.com/Source-Protocol-Cosmos/testnets/master/sourcechain-testnet/genesis.json > ~/.source/config/genesis.json
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
-
-`sha256sum $HOME/.source/config/genesis.json`
-- 2bf556b50a2094f252e0aac75c8018a9d6c0a77ba64ce39811945087f6a5165d  genesis.json
-
-### Pruning (optional) one command
+### Create service
 ```python
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.source/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.source/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.source/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.source/config/app.toml
-```
-### Indexer (optional) one command
-```python
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.source/config/config.toml
-```
-### Set up the minimum gas price and Peers/Seeds/Filter peers
-```python
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0usource\"/;" ~/.source/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.source/config/config.toml
-external_address=$(wget -qO- eth0.me) 
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.source/config/config.toml
-
-peers="aad92fcdcba7855b9e815b038538532032004361@rpc.source.max-node.xyz:28657"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.source/config/config.toml
-
-seeds=""
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.source/config/config.toml
-
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.source/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 100/g' $HOME/.source/config/config.toml
-```
-
-## Download addrbook
-```python
-wget -O $HOME/.source/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/addrbook.json"
-```
-
-# Create a service file
-```python
-sudo tee /etc/systemd/system/sourced.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/sourced.service > /dev/null << EOF
 [Unit]
-Description=source
+Description=source-testnet node service
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which sourced) start
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.source"
+Environment="DAEMON_NAME=sourced"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable sourced
 ```
-
-# SnapShot (~0.1 GB) updated every 6 hours
+# Initialize the node
+### Set node configuration
 ```python
-cd $HOME
-apt install lz4
-sudo systemctl stop sourced
-cp $HOME/.source/data/priv_validator_state.json $HOME/.source/priv_validator_state.json.backup
-rm -rf $HOME/.source/data
-curl -o - -L https://snapshot.max-node.xyz/source//snapshot.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.source --strip-components 2
-curl -o - -L https://snapshot.max-node.xyz/source/wasm/wasm-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.source/data --strip-components 3
-mv $HOME/.source/priv_validator_state.json.backup $HOME/.source/data/priv_validator_state.json
-wget -O $HOME/.source/config/addrbook.json "https://raw.githubusercontent.com/Node-max/Testnet/main/Source%20Protocol/Node_installation_guide/addrbook.json"
-sudo systemctl restart sourced && journalctl -u sourced -f -o cat
+sourced config chain-id sourcechain-testnet
+sourced config keyring-backend test
+sourced config node tcp://localhost:28657
 ```
-
-# Start node (one command)
+### Initialize the node
 ```python
-sudo systemctl daemon-reload &&
-sudo systemctl enable sourced &&
-sudo systemctl restart sourced && sudo journalctl -u sourced -f -o cat
+sourced init $MONIKER --chain-id sourcechain-testnet
 ```
-
-## Create validator
+### Download genesis and addrbook
+```pythom
+curl -Ls https://snapshots.max-node.xyz/source/genesis.json > $HOME/.source/config/genesis.json
+curl -Ls https://snapshots.max-node.xyz/source/addrbook.json > $HOME/.source/config/addrbook.json
+```
+### Add seeds
 ```python
-sourced tx staking create-validator \
---amount=1000000usource \
---pubkey=$(sourced tendermint show-validator) \
---moniker=<moniker> \
---chain-id=sourcechain-testnet \
---commission-rate="0.10" \
---commission-max-rate="0.20" \
---commission-max-change-rate="0.1" \
---min-self-delegation="1" \
---fees=100usource \
---from=<walletName> \
---identity="" \
---website="" \
---details="" \
--y
+sed -i -e "s|^seeds *=.*|seeds = \"8574b64414e446621dc9ad09bc25dd328cb6aa2d@rpc.source.max-node.xyz:28656\"|" $HOME/.source/config/config.toml
 ```
-
-### Delete node (one command)
+### Set minimum gas price
 ```python
-sudo systemctl stop sourced && \
-sudo systemctl disable sourced && \
-rm /etc/systemd/system/sourced.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf .source && \
-rm -rf source && \
-rm -rf $(which sourced)
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0usource\"|" $HOME/.source/config/app.toml
 ```
-
-
+### Set pruning
+```python
+sed -i \
+  -e 's|^pruning *=.*|pruning = "custom"|' \
+  -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+  -e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
+  -e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+  $HOME/.source/config/app.toml
+```
+### Set custom ports
+```python
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:28658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:28657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:28060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:28656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":28660\"%" $HOME/.source/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:28317\"%; s%^address = \":8080\"%address = \":28080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:28090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:28091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:28545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:28546\"%" $HOME/.source/config/app.toml
+```
+### Download latest chain snapshot
+```python
+curl -L https://snapshots.max-node.xyz/source/sourcechain-testnet_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+[[ -f $HOME/.source/data/upgrade-info.json ]] && cp $HOME/.source/data/upgrade-info.json $HOME/.source/cosmovisor/genesis/upgrade-info.json
+```
+### Start service and check the logs
+```python
+sudo systemctl start sourced && sudo journalctl -u sourced -f --no-hostname -o cat
+```
