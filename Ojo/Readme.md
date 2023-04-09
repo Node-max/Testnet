@@ -18,7 +18,7 @@ grpc: https://grpc.ojo.max-node.xyz:50090
 
 ### addrbook
 ```python
-curl -Ls https://snapshots.kjnodes.com/ojo-testnet/addrbook.json > $HOME/.ojo/config/addrbook.json
+curl -Ls https://snapshots.max-node.xyz/ojo/addrbook.json > $HOME/.ojo/config/addrbook.json
 ```
 
 ### live-peers
