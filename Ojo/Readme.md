@@ -1,4 +1,4 @@
-# Chain ID: ojo-devnet | Latest Version Tag: v0.1.2 | Wasm: OFF
+# Chain ID: ojo-devnet | Latest Version Tag: v0.1.2 
 # [Website](https://ojo.network/) | [Discord](https://discord.gg/8Ae62aXh) | [Twitter](https://twitter.com/ojo_network)
 
 # Chain explorer
