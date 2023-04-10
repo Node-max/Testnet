@@ -7,7 +7,7 @@ rm -rf $HOME/.lava/data
 ```
 ### Download latest snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/lava/_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+curl -L https://snapshots.max-node.xyz/lava/lava-testnet-1_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 ```
 ### Restart the service and check the log
