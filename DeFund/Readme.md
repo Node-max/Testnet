@@ -19,6 +19,10 @@ grpc: http://grpc.defund.max-node.xyz
 ```python
 curl -Ls https://snapshot.max-node.xyz/defund/addrbook.json > $HOME/.defund/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshot.max-node.xyz/defund/genesis.json > $HOME/.defund/config/genesis.json
+```
 
 ### live-peers
 ```python
