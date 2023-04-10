@@ -17,7 +17,7 @@ grpc: https://grpc.nibiru.max-node.xyz
 
 ### addrbook
 ```python
-curl -Ls https://snapshots.max-node.xyz/nibiru/addrbook.json > $HOME/.nibid/config/addrbook.json
+curl -Ls https://snapshot.max-node.xyz/nibiru/addrbook.json > $HOME/.nibid/config/addrbook.json
 ```
 
 ### live-peers
