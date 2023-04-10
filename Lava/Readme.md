@@ -20,6 +20,10 @@ grpc: https://grpc.lava.max-node.xyz
 ```python
 curl -Ls https://snapshots.max-node.xyz/lava/addrbook.json > $HOME/.lava/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshots.max-node.xyz/lava/genesis.json > $HOME/.lava/config/genesis.json
+```
 
 ### live-peers
 ```python
