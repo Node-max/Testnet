@@ -18,6 +18,10 @@ fec2ab9726f87d68d4f37f8c66cb852a2f6ce0c2@rpc.andromeda.max-node.xyz:47656
 ```python
 curl -Ls https://snapshots.max-node.xyz/andromeda/addrbook.json > $HOME/.andromeda/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshots.max-node.xyz/andromeda/genesis.json > $HOME/.andromeda/config/genesis.json
+```
 
 ### live-peers
 ```python
