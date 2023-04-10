@@ -20,6 +20,10 @@ grpc: https://grpc.ojo.max-node.xyz:50090
 ```python
 curl -Ls https://snapshots.max-node.xyz/ojo/addrbook.json > $HOME/.ojo/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshots.max-node.xyz/ojo/genesis.json > $HOME/.ojo/config/genesis.json
+```
 
 ### live-peers
 ```python
