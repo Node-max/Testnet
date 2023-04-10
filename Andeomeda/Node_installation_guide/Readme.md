@@ -85,7 +85,7 @@ curl -Ls https://snapshots.max-node.xyz/andromeda/addrbook.json > $HOME/.androme
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"fec2ab9726f87d68d4f37f8c66cb852a2f6ce0c2@rpc.andromeda.max-node.xyz:47656\"|" $HOME/.andromeda/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.andromeda.max-node.xyz:47656\"|" $HOME/.andromeda/config/config.toml
 ```
 ### Set minimum gas price
 ```python
