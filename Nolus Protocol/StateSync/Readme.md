@@ -1,12 +1,12 @@
-# StateSync
+# Instructions
 
-- **Stop the service and reset the data**
+### Stop the service and reset the data
 ```python
 sudo systemctl stop nolusd
 cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
 nolusd tendermint unsafe-reset-all --home $HOME/.nolus
 ```
-- **Get and configure the state sync information**
+### Get and configure the state sync information
 ```pyton
 STATE_SYNC_RPC=https://rpc.nolus-test.max-node.xyz:443
 STATE_SYNC_PEER=f299f7764b0bd293dd9f3f9b347ee5eccc519de7@rpc.nolus-test.max-node.xyz:43656
@@ -25,7 +25,7 @@ sed -i \
 mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
 ```
 
-- **Restart the service and check the log**
+### Restart the service and check the log
 ```pytom
 sudo systemctl start nolusd && sudo journalctl -u nolusd -f --no-hostname -o cat
 ````
