@@ -17,7 +17,7 @@ grpc: http://grpc.defund.max-node.xyz
 
 ### addrbook
 ```python
-curl -Ls https://snapshots.max-node.xyz/defund/addrbook.json > $HOME/.defund/config/addrbook.json
+curl -Ls https://snapshot.max-node.xyz/defund/addrbook.json > $HOME/.defund/config/addrbook.json
 ```
 
 ### live-peers
