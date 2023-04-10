@@ -19,6 +19,10 @@ grpc: http://grpc.gitopia.max-node.xyz
 ```python
 curl -Ls https://snapshots.max-node.xyz/gitopia/addrbook.json > $HOME/.gitopia/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshots.max-node.xyz/gitopia/genesis.json > $HOME/.gitopia/config/genesis.json
+```
 
 ### live-peers
 ```python
