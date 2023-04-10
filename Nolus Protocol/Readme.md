@@ -19,6 +19,10 @@ f299f7764b0bd293dd9f3f9b347ee5eccc519de7@rpc.nolus-test.max-node.xyz:43656
 ```python
 curl -Ls https://snapshot.max-node.xyz/nolus/addrbook.json > $HOME/.nolus/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshot.max-node.xyz/nolus/genesis.json > $HOME/.nolus/config/genesis.json
+```
 
 ### live-peers
 ```python
