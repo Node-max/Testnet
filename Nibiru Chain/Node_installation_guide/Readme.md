@@ -85,7 +85,7 @@ curl -Ls https://snapshot.max-node.xyz/nibiru/addrbook.json > $HOME/.nibid/confi
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.nibiru.max-node.xyz:39657\"|" $HOME/.nibid/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.nibiru.max-node.xyz:39659\"|" $HOME/.nibid/config/config.toml
 ```
 ### Set minimum gas price
 ```python
