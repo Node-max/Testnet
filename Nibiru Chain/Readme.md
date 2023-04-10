@@ -19,6 +19,10 @@ grpc: https://grpc.nibiru.max-node.xyz
 ```python
 curl -Ls https://snapshot.max-node.xyz/nibiru/addrbook.json > $HOME/.nibid/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshot.max-node.xyz/nibiru/genesis.json > $HOME/.nibid/config/genesis.json
+```
 
 ### live-peers
 ```python
