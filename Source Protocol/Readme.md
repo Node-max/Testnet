@@ -19,6 +19,10 @@ grpc: https://grpc.source.max-node.xyz
 ```python
 curl -Ls https://snapshots.max-node.xyz/source/addrbook.json > $HOME/.source/config/addrbook.json
 ```
+### genesis
+```python
+curl -Ls https://snapshots.max-node.xyz/source/genesis.json > $HOME/.source/config/genesis.json
+```
 
 ### live-peers
 ```python
