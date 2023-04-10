@@ -2,7 +2,7 @@
 # [Website](https://nolus.io/) | [Discord](https://discord.gg/nolus-protocol) | [Twitter](https://twitter.com/NolusProtocol)
 
 # Chain explorer
-https://defund.explorers.guru/
+https://nolus.explorers.guru/
 
 # Public endpoints
 rpc: https://rpc.nolus-test.max-node.xyz \
