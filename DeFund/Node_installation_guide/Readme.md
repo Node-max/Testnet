@@ -85,7 +85,7 @@ curl -Ls https://snapshot.max-node.xyz/defund/addrbook.json > $HOME/.defund/conf
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"6937d73ed186b7b7a89ecf6256d8023ba88c146f@rpc.defund.max-node.xyz:40656\"|" $HOME/.defund/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.defund.max-node.xyz:40659\"|" $HOME/.defund/config/config.toml
 ```
 ### Set minimum gas price
 ```python
