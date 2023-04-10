@@ -84,7 +84,7 @@ curl -Ls https://snapshots.max-node.xyz/lava/addrbook.json
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"69549b8047c98609d9935415aec7999386eb6d07@rpc.lava.max-node.xyz:44657\"|" $HOME/.lava/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@rpc.lava.max-node.xyz:44657\"|" $HOME/.lava/config/config.toml
 ```
 ### Set minimum gas price
 ```python
