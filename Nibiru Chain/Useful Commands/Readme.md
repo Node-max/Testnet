@@ -1,9 +1,9 @@
-⚠️ save the **seed** phrase
+save the **seed** phrase
 ```python
 nibid keys add <YOUR_WALLET_NAME>
 ```
 - **Recover wallet**
-⚠️ save the **seed** phrase
+save the **seed** phrase
 ```python
 nibid keys add <YOUR_WALLET_NAME> --recover
 ```
@@ -16,7 +16,7 @@ nibid keys list
 nibid keys delete <YOUR_WALLET_NAME>
 ```
 - **Export wallet**
-⚠️ save to wallet.backup
+save to wallet.backup
 ```python
 nibid keys export <YOUR_WALLET_NAME>
 ```
@@ -103,7 +103,7 @@ nibid tx staking delegate <VALOPER_ADDRESS> 1000000unibi --from <YOUR_WALLET> --
 nibid tx staking redelegate <SRC_VALOPER_ADDRESS> <TARGET_VALOPER_ADDRESS> 1000000unibi --from <YOUR_WALLET> --chain-id nibiru-itn-1 --gas-prices 0.1unibi --gas-adjustment 1.5 --gas auto -y
 ```
 - **Collect tokens from the validator**
-⚠️ there may be a long waiting time for the tokens to arrive in the wallet
+there may be a long waiting time for the tokens to arrive in the wallet
 ```python
 nibid tx staking unbond <VALOPER_ADDRESS> 1000000unibi --from <YOUR_WALLET> --chain-id nibiru-itn-1 --gas-prices 0.1unibi --gas-adjustment 1.5 --gas auto -y
 ```
