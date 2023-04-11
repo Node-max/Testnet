@@ -2,7 +2,7 @@
 # [Website](https://www.babylonchain.io/) | [Discord](https://discord.gg/babylonchain) | [Twitter](https://twitter.com/babylon_chain)
 
 # Chain explorer
-https://defund.explorers.guru/
+https://babylon.explorers.guru/
 
 # Public endpoints
 api: https://api.babylon.max-node.xyzz \
