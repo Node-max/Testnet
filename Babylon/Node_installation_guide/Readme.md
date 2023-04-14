@@ -37,7 +37,7 @@ rm -rf build
 ### Create application symlinks
 ```python
 ln -s $HOME/.babylond/cosmovisor/genesis $HOME/.babylond/cosmovisor/current
-sudo ln -s $HOME/.babylond/cosmovisor/current/bin/gitopiad /usr/local/bin/babylon
+sudo ln -s $HOME/.babylond/cosmovisor/current/bin/babylond /usr/local/bin/babylon
 ```
 # Install Cosmovisor and create a service
 ### Download and install Cosmovisor
@@ -48,7 +48,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```python
 sudo tee /etc/systemd/system/babylond.service > /dev/null << EOF
 [Unit]
-Description=nibiru-testnet node service
+Description=babylon-testnet node service
 After=network-online.target
 
 [Service]
@@ -57,8 +57,8 @@ ExecStart=$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.nibid"
-Environment="DAEMON_NAME=nibid"
+Environment="DAEMON_HOME=$HOME/.babylond"
+Environment="DAEMON_NAME=babylond"
 Environment="UNSAFE_SKIP_BACKUP=true"
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.babylond/cosmovisor/current/bin"
 
@@ -86,7 +86,7 @@ curl -Ls https://snapshots.max-node.xyz/babylon/addrbook.json > $HOME/.babylond/
 ```
 ### Add seeds
 ```python
-sed -i -e "s|^seeds *=.*|seeds = \"3d8c866fc1d5f35a472d4ffdb4e6304df985de9e@rpc.babylon.max-node.xyz:50659\"|" $HOME/.babylond/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3d8c866fc1d5f35a472d4ffdb4e6304df985de9e@rpc.babylon.max-node.xyz:32656\"|" $HOME/.babylond/config/config.toml
 ```
 ### Set minimum gas price
 ```python
@@ -108,7 +108,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:51317\"
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshots.max-node.xyz/babylon/bbn-test1_latest.tar.lz4  | tar -Ilz4 -xf - -C $HOME/.gitopia
+curl -L https://snapshots.max-node.xyz/babylon/bbn-test1_latest.tar.lz4  | tar -Ilz4 -xf - -C $HOME/.babylond
 [[ -f $HOME/.babylond/data/upgrade-info.json ]] && cp $HOME/.babylond/data/upgrade-info.json $HOME/.babylond/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
