@@ -48,20 +48,23 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```python
 sudo tee /etc/systemd/system/babylond.service > /dev/null << EOF
 [Unit]
-Description=Babylon Node
+Description=nibiru-testnet node service
 After=network-online.target
+
 [Service]
 User=$USER
-ExecStart=$(which babylond) start
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
-LimitNOFILE=10000
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.nibid"
+Environment="DAEMON_NAME=nibid"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.babylond/cosmovisor/current/bin"
+
 [Install]
 WantedBy=multi-user.target
 EOF
-
-babylond tendermint unsafe-reset-all --home $HOME/.babylond --keep-addr-book
-
 sudo systemctl daemon-reload
 sudo systemctl enable babylond
 ```
