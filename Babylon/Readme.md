@@ -7,7 +7,7 @@ https://babylon.explorers.guru/
 # Public endpoints
 api: https://api.babylon.max-node.xyzz \
 rpc: https://rpc.babylon.max-node.xyz \
-grpc: http://grpc.babylon.max-node.xyz
+grpc: grpc.babylon.max-node.xyz:9690
 
 # Peering
 ### state-sync
