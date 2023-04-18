@@ -1,8 +1,8 @@
-# Chain ID: galileo-3 | Latest Version Tag: galileo-3-v1.1.0-beta1 
-# [Website](https://www.andromedaprotocol.io/) | [Discord](https://discord.gg/5pXfMM4f) | [Twitter](https://twitter.com/andromedaprot)
+# Chain ID: cascadia_6102-1 | Latest Version Tag: v0.1.1 
+# [Website](https://www.cascadia.foundation/) | [Discord](https://discord.gg/cascadia) | [Twitter](https://twitter.com/CascadiaSystems)
 
 # Chain explorer
-https://andromeda.explorers.guru/
+https://testnet.cascadia.explorers.guru/
 
 # Public endpoints
 api: https://api.cascadia.max-node.xyz \
