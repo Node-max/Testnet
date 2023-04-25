@@ -1,4 +1,4 @@
-# Chain ID: nolus-rila | Latest Version Tag: v0.2.2
+# Chain ID: nolus-rila | Latest Version Tag: v0.2.2-equalize-store-heights
 # [Website](https://nolus.io/) | [Discord](https://discord.gg/nolus-protocol) | [Twitter](https://twitter.com/NolusProtocol)
 
 # Chain explorer
