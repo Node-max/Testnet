@@ -125,7 +125,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://
 ```
 # Download latest chain snapshot
 ```python
-curl -L https://snapshot.max-node.xyz/nolus/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+curl -L https://snapshot.max-node.xyz/nolus/nolus-rila_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
 [[ -f $HOME/.nolus/data/upgrade-info.json ]] && cp $HOME/.nolus/data/upgrade-info.json $HOME/.nolus/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
