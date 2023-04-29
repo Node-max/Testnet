@@ -106,7 +106,7 @@ sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:39317\"
 ```
 ### Download latest chain snapshot
 ```python
-curl -L https://snapshot.max-node.xyz/nibiru/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
+curl -L https://snapshot.max-node.xyz/nibiru/nibiru-itn-1_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid
 [[ -f $HOME/.nibid/data/upgrade-info.json ]] && cp $HOME/.nibid/data/upgrade-info.json $HOME/.nibid/cosmovisor/genesis/upgrade-info.json
 ```
 ### Start service and check the logs
