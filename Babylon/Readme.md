@@ -1,8 +1,8 @@
 # Chain ID: bbn-test1 | Latest Version Tag: v0.5.0
 # [Website](https://www.babylonchain.io/) | [Discord](https://discord.gg/babylonchain) | [Twitter](https://twitter.com/babylon_chain)
 
-# Chain explorer
-https://babylon.explorers.guru/
+# My Validator
+[Validator](https://babylon.explorers.guru/validator/bbnvaloper1x4d4d05ulwgda6y63mep7pxavs6z4rcglw4ka4)
 
 # Public endpoints
 api: https://api.babylon.max-node.xyzz \
