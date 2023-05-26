@@ -1,4 +1,4 @@
-# Active Testnet
+# Active Testnet (Stake here)
 
 # [ANDROMEDA](https://explorer.kjnodes.com/andromeda-testnet/staking/andrvaloper1rnqef6wz6g3dv0dg34jhrdpyscqh2jx6u88ssz)
 # [CASCADIA](https://explorer.kjnodes.com/cascadia-testnet/staking/cascadiavaloper1ffkj9kp6mt7wfr35yfpr5lr78783vh739j8vlz) 
