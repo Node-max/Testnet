@@ -1,4 +1,4 @@
-# Snapshot
+
 ## install dependencies, if needed
 ```pyton
 sudo apt update
