@@ -25,7 +25,7 @@ archwayd keys import wallet wallet.backup
 ```
 ### Query wallet balance
 ```pythom
-archwayd q bank balances $(lavad keys show wallet -a)
+archwayd q bank balances $(archwayd keys show wallet -a)
 ```
 # Validator management
 ### Please make sure you have adjusted moniker, identity, details and website to match your values.**
