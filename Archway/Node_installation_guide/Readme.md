@@ -80,8 +80,8 @@ archwayd init $MONIKER --chain-id constantine-3
 ```
 ### Download genesis and addrbook
 ```pythom
-curl -Ls https://snapshots.kjnodes.com/archway-testnet/genesis.json > $HOME/.archway/config/genesis.json
-curl -Ls https://snapshots.kjnodes.com/archway-testnet/addrbook.json > $HOME/.archway/config/addrbook.json
+curl -Ls https://snapshots.max-node.xyz/archway/genesis.json > $HOME/.archway/config/genesis.json
+curl -Ls https://snapshots.max-node.xyz/archway/addrbook.json > $HOME/.archway/config/addrbook.json
 ```
 ### Add seeds
 ```python
