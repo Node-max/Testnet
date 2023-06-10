@@ -7,7 +7,7 @@
 # Public endpoints
 api: https://api.empower.max-node.xyz \
 rpc: https://rpc.empower.max-node.xyz \
-grpc: https://grpc.empower.max-node.xyz:9990
+grpc: grpc.empower.max-node.xyz:9990
 
 # Peering
 ### state-sync
