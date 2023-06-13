@@ -24,7 +24,6 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
 s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.empowerchain/config/config.toml
 empowerd tendermint unsafe-reset-all --home $HOME/.empowerchain
 wget -O $HOME/.empowerchain/config/addrbook.json "https://snapshots.max-node.xyz/empower/empower/addrbook.json"
-curl -o - -L http://empw.wasm.stavr.tech:1001/wasm-empw.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.empowerchain --strip-components 2
 ```
 ### Restart the service and check the log
 ```python
