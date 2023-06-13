@@ -7,7 +7,7 @@ andromedad tendermint unsafe-reset-all --home $HOME/.andromedad
 ```
 ### Get and configure the state sync information
 ```python
-STATE_SYNC_RPC=https://api.andromeda.max-node.xyz:443
+STATE_SYNC_RPC=https://rpc.andromeda.max-node.xyz:443
 STATE_SYNC_PEER=fec2ab9726f87d68d4f37f8c66cb852a2f6ce0c2@rpc.andromeda.max-node.xyz:47656
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
