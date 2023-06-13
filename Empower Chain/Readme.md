@@ -2,7 +2,7 @@
 # [Website](https://www.empowerchain.io/) | [Discord](https://discord.gg/uQdhvMQp) | [Twitter](https://twitter.com/empowerchain_io)
 
 # Chain explorer
-
+https://empower.explorers.guru/
 
 # Public endpoints
 api: https://api.empower.max-node.xyz \
